@@ -6,4 +6,7 @@
   <packaging>pom</packaging>
   <name>monitor</name>
   <description>monitor system</description>
+  <modules>
+  	<module>web</module>
+  </modules>
 </project>
