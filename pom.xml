@@ -10,5 +10,6 @@
   	<module>web</module>
   	<module>cep</module>
   	<module>deploy</module>
+  	<module>algorithm</module>
   </modules>
 </project>

@@ -6,7 +6,7 @@
         <groupId>sjtu.cit</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>web</artifactId>
+    <artifactId>monitor.web</artifactId>
     <name>My Simple Webx Application</name>
     <packaging>war</packaging>
     <properties>
