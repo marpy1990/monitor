@@ -11,5 +11,6 @@
   	<module>cep</module>
   	<module>deploy</module>
   	<module>algorithm</module>
+  	<module>agent</module>
   </modules>
 </project>
