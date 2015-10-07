@@ -8,5 +8,6 @@
   <description>monitor system</description>
   <modules>
   	<module>web</module>
+  	<module>cep</module>
   </modules>
 </project>
