@@ -6,13 +6,11 @@
         <groupId>sjtu.cit</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>sjtu.cit</groupId>
     <artifactId>web</artifactId>
     <name>My Simple Webx Application</name>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
     <properties>
-        <java.version>1.6</java.version>
+        <java.version>1.7</java.version>
         <java.encoding>UTF-8</java.encoding>
         <webx-version>3.2.4</webx-version>
         <spring-version>3.2.7.RELEASE</spring-version>
