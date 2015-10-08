@@ -15,16 +15,20 @@
  * limitations under the License.
  */
 
-package sjtu.cit.monitor.web.app1.module.action;
+package sjtu.cit.monitor.web.sys.module.screen.list;
 
-import com.alibaba.citrus.turbine.Navigator;
-import com.alibaba.citrus.turbine.dataresolver.FormGroup;
+import com.alibaba.citrus.turbine.Context;
 
-import sjtu.cit.monitor.web.app1.Visitor;
-
-public class RegisterAction {
-    public void doRegister(@FormGroup("register") Visitor visitor, Navigator nav) {
-        String name = visitor.getName();
-        nav.redirectTo("app1Link").withTarget("form/welcome").withParameter("name", name);
+public class Default {
+    public void execute(Context context) {
+        context.put("list", new String[] {
+                "Adobe Photoshop",
+                "Adobe Acrobat",
+                "Adobe Lightroom",
+                "Apple Aperture",
+                "Microsoft Office",
+                "IntelliJ IDEA",
+                "<<\"Objective-C\"指南>>"
+        });
     }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package sjtu.cit.monitor.web.app1.module.screen.multievent;
+package sjtu.cit.monitor.web.sys.module.screen.multievent;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package sjtu.cit.monitor.web.app1.module.screen.simple;
+package sjtu.cit.monitor.web.sys.module.screen.simple;
 
 import static com.alibaba.citrus.util.ObjectUtil.*;
 import static com.alibaba.citrus.util.StringEscapeUtil.*;

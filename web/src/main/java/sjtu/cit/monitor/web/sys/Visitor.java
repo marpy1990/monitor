@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package sjtu.cit.monitor.web.app1;
+package sjtu.cit.monitor.web.sys;
 
 public class Visitor {
     private String name;

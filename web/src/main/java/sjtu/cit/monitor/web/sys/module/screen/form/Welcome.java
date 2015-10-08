@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package sjtu.cit.monitor.web.app1.module.screen.form;
+package sjtu.cit.monitor.web.sys.module.screen.form;
 
 import com.alibaba.citrus.turbine.Context;
 import com.alibaba.citrus.turbine.dataresolver.Param;
