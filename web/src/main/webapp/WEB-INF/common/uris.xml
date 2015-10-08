@@ -15,11 +15,11 @@
     <services:uris>
         <uris:uri id="server" requestAware="true" />
 
-        <uris:turbine-uri id="sysLink" exposed="true" extends="server">
+        <uris:turbine-uri id="homeLink" exposed="true" extends="server">
             <componentPath>/</componentPath>
         </uris:turbine-uri>
 
-        <uris:turbine-content-uri id="sysContent" exposed="true" extends="sysLink" />
+        <uris:turbine-content-uri id="homeContent" exposed="true" extends="homeLink" />
 
     </services:uris>
 
