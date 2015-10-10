@@ -58,6 +58,7 @@
 
             <!-- Velocity -->
             <mapping extension="htm" to="" />
+            <mapping extension="html" to="" />
             <mapping extension="vhtml" to="" />
             <mapping extension="vm" to="" />
         </mapping-rules:extension-rule>
@@ -65,7 +66,7 @@
         <!-- Internal target name => External target name -->
         <mapping-rules:extension-rule id="extension.output">
             <!-- 默认后缀 -->
-            <mapping extension="" to="htm" />
+            <mapping extension="" to="html" />
 
             <!-- JSP -->
             <mapping extension="jhtml" to="jhtml" />

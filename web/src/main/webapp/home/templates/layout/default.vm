@@ -5,7 +5,8 @@ $control.setTemplate("head.vm")
 </head>
 <body>
 $control.setTemplate("topBanner.vm")
-<div class="container-fluid">
+$control.setTemplate("nav.vm")
+<div class="container-fluid main-container">
 $screen_placeholder
 </div>
 </body>
