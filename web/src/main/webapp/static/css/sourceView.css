@@ -1,0 +1,48 @@
+.right-tree{
+	position: fixed;
+    height: 100%;
+    width: 250px;
+    right: 0;
+    top: 0;
+    border-left: 2px #DFEFFF solid;
+    border-right: 2px #DFEFFF solid;
+    padding-top: 110px;
+    padding-bottom: 30px;
+}
+
+.tree-header{
+	background: #DFEFFF;
+    height: 110px;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    z-index: 9;
+}
+
+.tree-header p{
+	line-height:25px; 
+	color: #367ba8;
+}
+
+.tree-header div{
+	margin-top: 20px;
+}
+
+.tree-container{
+	overflow: auto;
+    height:100%;
+}
+
+.tree-bottom{
+	background: #DFEFFF; 
+	height:30px;
+	width:250px;
+	position:fixed; 
+	bottom:0; 
+	right:0;
+	color: 
+	#367ba8;
+	z-index:999;
+}

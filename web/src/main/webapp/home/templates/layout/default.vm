@@ -1,13 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-$control.setTemplate("head.vm")
+	$control.setTemplate("head.vm")
 </head>
 <body>
-$control.setTemplate("topBanner.vm")
-$control.setTemplate("nav.vm")
-<div class="container-fluid main-container">
-$screen_placeholder
-</div>
+	<div class="main">
+		$control.setTemplate("topBanner.vm")
+		$control.setTemplate("nav.vm")
+		<div class="container-fluid main-container">
+			$screen_placeholder
+		</div>
+	</div>
+	<div class="right">
+		$control.setTemplate("sourceView.vm")
+	</div>
 </body>
 </html>

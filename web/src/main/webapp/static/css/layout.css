@@ -1,65 +1,42 @@
-.main-topBanner{
-	padding: 10px 20px; 
-	position: fixed; 
-	top: 0;
-	height: 80px;
-	width: 100%; 
+.main{
+	width: 100%;
 	min-width: 1170px;
+	padding-right: 250px;
+}
+
+.right{
+	width: 250px;
+	height: 100%;
+	position: fixed;
+	right: 0;
+    top: 0;
+    z-index: 999;
+    background-color: white;
+}
+
+.main-topBanner{
+	padding: 10px 20px;
+	top: 0;
+	position: relative;
+	height: 80px;
+	width: 100%;
 }
 
 .main-container{
-	margin-top: 111px;
-	padding-right: 0;
-    padding-left: 0;
+	position: relative;
 }
 
 .main-nav{
-	background: #0c4174;
     width: 100%;
-    position: fixed;
-    top: 80px;
-    
+    height: 30px;
+    position: relative;
+    background: #0c4174;
+    margin-bottom: 7.5px;
 }
 
-.main-nav ul{
-    border-width: 1px 0 0 0;
-    border-style: solid;
-    border-color: black;
-    padding: 0;
-}
-
-.main-nav li {
-	float: left;
-	list-style: none;
-	border-top: 3px transparent solid;
-	border-radius: 4px 4px 0 0;
-}
-
-.main-nav li:hover {
-	background: #285387;
-}
-
-.main-nav li.active {
-	background: white;
-	border-top: 3px #ffb640 solid;
-}
-
-.main-nav li.active>a {
-	color: #0c4174;
-	font-weight: bold;
-}
-
-.main-nav li>a {
-	display:block;
-	float: left;
-	padding: 0 20px 3px 20px;
-	line-height: 24px;
-	text-align: center;
-	color:white;
-	text-decoration: none;
-}
-
-.main-nav a:hover {
-	cursor: pointer;
-	text-decoration: none;
+.position-fixed{
+	position: fixed;
+	top: 0px;
+	padding-right: 250px;
+	z-index: 998;
 }

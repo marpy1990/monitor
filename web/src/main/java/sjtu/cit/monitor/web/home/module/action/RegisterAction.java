@@ -25,6 +25,6 @@ import sjtu.cit.monitor.web.home.Visitor;
 public class RegisterAction {
     public void doRegister(@FormGroup("register") Visitor visitor, Navigator nav) {
         String name = visitor.getName();
-        nav.redirectTo("homeLink").withTarget("form/welcome").withParameter("name", name);
+//        nav.redirectTo("homeLink").withTarget("form/welcome").withParameter("name", name);
     }
 }

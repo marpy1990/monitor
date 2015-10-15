@@ -1,10 +1,13 @@
 #macro (active $targetName) 
     #if ($!target==$!targetName) class="active" #end
 #end
+<link rel="stylesheet" href="${homeLink}static/css/nav.css">
 <div class="main-nav">
 	<ul>
+		<li #active("overview")><a href="${homeLink}overview.html">概览</a></li>
 		<li #active("dashboard")><a href="${homeLink}dashboard.html">仪表板</a></li>
 		<li #active("predict")><a href="${homeLink}predict.html">实时预测</a></li>
 		<li #active("performance")><a href="${homeLink}performance.html">性能预测</a></li>
 	</ul>
 </div>
+<script type="text/javascript">seajs.use("js/nav.js")</script>
