@@ -10,24 +10,13 @@ public class SourceTree {
 	public List<Node> doGetNodes(@Param("id") Long id) {
 		List<Node> nodes = new ArrayList<Node>();
 		if (null == id) {
-			Node node = new Node("1", "root", true);
+			Node node = new Node(1, 0, "root", false, true);
 			nodes.add(node);
 		}
 		else{
-			nodes.add(new Node("1", "1", false));
-			nodes.add(new Node("2", "2", false));
-			nodes.add(new Node("3", "3", false));
-			nodes.add(new Node("4", "4", false));
-			nodes.add(new Node("5", "5", false));
-			nodes.add(new Node("6", "6", false));
-			nodes.add(new Node("7", "17", false));
-			nodes.add(new Node("8", "1", false));
-			nodes.add(new Node("9", "2", false));
-			nodes.add(new Node("10", "3", false));
-			nodes.add(new Node("11", "4", false));
-			nodes.add(new Node("12", "5", false));
-			nodes.add(new Node("13", "6", false));
-			nodes.add(new Node("14", "17", false));
+			nodes.add(new Node(11, 1, "1.1", false, true));
+			nodes.add(new Node(111, 11, "1.1.1", false, false));
+			nodes.add(new Node(12, 1, "1.1", false, true));
 		}
 		return nodes;
 	}
@@ -38,7 +27,11 @@ class Node {
 
 	private long id;
 
+	private long pId;
+	
 	private String name;
+	
+	private boolean open; 
 
 	private boolean isParent;
 
@@ -46,10 +39,12 @@ class Node {
 		super();
 	}
 
-	public Node(String id, String name, boolean isParent) {
+	public Node(long id, long pid, String name, boolean open, boolean isParent) {
 		super();
-		this.id = Long.valueOf(id);
+		this.id = id;
+		this.pId = pid;
 		this.name = name;
+		this.open = open;
 		this.isParent = isParent;
 	}
 
@@ -75,5 +70,21 @@ class Node {
 
 	public void setIsParent(boolean isParent) {
 		this.isParent = isParent;
+	}
+
+	public long getPId() {
+		return pId;
+	}
+
+	public void setPId(long pId) {
+		this.pId = pId;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 }
