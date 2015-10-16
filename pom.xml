@@ -13,5 +13,6 @@
   	<module>deploy</module>
   	<module>algorithm</module>
   	<module>agent</module>
+    <module>api</module>
   </modules>
 </project>
