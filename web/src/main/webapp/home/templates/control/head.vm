@@ -4,9 +4,9 @@
 <meta name="description" content="基于事件的预测式监控系统 - 简洁、直观、多样、优秀的监控系统，维护整个集群。">
 <meta name="keywords" content="监控系统,预测式监控系统,基于事件监控系统">
 <meta name="author" content="sjtu cit">
-<link rel="stylesheet" href="${homeLink}static/lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="${homeLink}static/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<link rel="stylesheet" href="${homeLink}static/css/layout.css">
-<script src="${homeLink}static/lib/seajs-3.0.0/dist/sea.js" id="seajsnode"></script>
-<script src="${homeLink}static/js/config.js" ></script>
+<link rel="stylesheet" href="/static/lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<link rel="stylesheet" href="/static/css/layout.css">
+<script src="/static/lib/seajs-3.0.0/dist/sea.js" id="seajsnode"></script>
+<script src="/static/js/config.js" ></script>
 <title>预测式监控系统</title>

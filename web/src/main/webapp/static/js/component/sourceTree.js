@@ -3,12 +3,6 @@ define(function(require, exports, module) {
 	require('ztree');
 
 	var setting = {
-		data : {
-			simpleData : {
-				enable : true
-			}
-		},
-		
 		async : {
 			enable : true,
 			url : "/rpc/source_tree/getNodes.json",

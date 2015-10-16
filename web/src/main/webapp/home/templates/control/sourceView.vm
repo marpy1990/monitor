@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="${homeLink}static/css/sourceView.css">
+<link rel="stylesheet" href="/static/css/sourceView.css">
 <div class="right-tree">
 	<div class="tree-header">
 		<p><b>监控资源视图</b></p>
@@ -19,5 +19,4 @@
 	<div class="tree-bottom"></div>
 	
 </div>
-<script type="text/javascript" src="/static/lib/jquery-1.11.3/jquery-1.11.3.js"></script>
 <script type="text/javascript">seajs.use("js/sourceView.js")</script>
