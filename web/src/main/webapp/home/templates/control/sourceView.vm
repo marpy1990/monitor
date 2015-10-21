@@ -13,7 +13,7 @@
 	</div>
 
 	<div class="tree-container">
-		<div class="ztree"></div>
+		<div id="right-source-tree" class="ztree"></div>
 	</div>
 
 	<div class="tree-bottom"></div>

@@ -6,40 +6,44 @@ public class Source {
 	
 	private String name;
 	
-	private int parentId;
+	private int typeId;
 	
-	private int categoryId;
-	
+	private boolean ok;
+
+	public Source() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public int getParentId() {
-		return parentId;
-	}
-	
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+
+	public int getTypeId() {
+		return typeId;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public boolean isOk() {
+		return ok;
+	}
+
+	public void setOk(boolean ok) {
+		this.ok = ok;
 	}
 	
 }

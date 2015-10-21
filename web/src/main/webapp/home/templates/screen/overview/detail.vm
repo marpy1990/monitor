@@ -1,0 +1,5 @@
+<link rel="stylesheet" href="/static/css/overview/layout.css">
+$control.setTemplate("overview/sidebar.vm")
+<div class="detail-content">
+	$control.setTemplate("test.vm")
+</div>

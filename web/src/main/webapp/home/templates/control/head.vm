@@ -8,5 +8,6 @@
 <link rel="stylesheet" href="/static/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 <link rel="stylesheet" href="/static/css/layout.css">
 <script src="/static/lib/seajs-3.0.0/dist/sea.js" id="seajsnode"></script>
+<script src="/static/lib/jquery-1.11.3/jquery-1.11.3.min.js"></script>
 <script src="/static/js/config.js" ></script>
-<title>预测式监控系统</title>
+<title>中国电信软件监控系统</title>

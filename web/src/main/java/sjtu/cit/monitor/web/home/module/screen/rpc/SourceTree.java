@@ -7,45 +7,69 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import sjtu.cit.monitor.api.cep.SourceManager;
 import sjtu.cit.monitor.api.cep.entity.Source;
-import sjtu.cit.monitor.api.cep.entity.SourceCategory;
-import sjtu.cit.monitor.api.cep.service.SourceCategoryService;
-import sjtu.cit.monitor.api.cep.service.SourceService;
-import sjtu.cit.monitor.api.cep.service.SourceStatusService;
+import sjtu.cit.monitor.api.cep.entity.SourceType;
+import sjtu.cit.monitor.biz.SourceTreeManager;
+import sjtu.cit.monitor.dal.dao.IconDao;
+import sjtu.cit.monitor.dal.entity.Feature;
 
 import com.alibaba.citrus.turbine.dataresolver.Param;
+import com.alibaba.citrus.util.StringUtil;
 
 public class SourceTree {
 
-	private static final String ICON_ROOT = "/static/img/sourceTree/root.png";
-	private static final String ICON_MACHINE_OK = "/static/img/sourceTree/machine_green.png";
-	private static final String ICON_MACHINE_ERR = "/static/img/sourceTree/machine_red.png";
-	private static final String ICON_COMPONENT = "/static/img/sourceTree/component.png";
-	private static final String ICON_UNKNOW = "/static/img/sourceTree/unknow.png";
+	@Autowired
+	private IconDao iconDao;
 
 	@Autowired
-	private SourceService sourceService;
+	private SourceManager sourceManager;
 
 	@Autowired
-	private SourceStatusService sourceStatusService;
+	private SourceTreeManager sourceTreeManager;
 
-	@Autowired
-	private SourceCategoryService sourceCategoryService;
-
-	public List<Node> doGetNodes(@Param("id") Integer id) {
-		List<Node> nodes;
+	public List<Node> doGetNodes(@Param("id") Integer id,
+			@Param("treeId") String treeId) {
+		if (StringUtil.isBlank(treeId))
+			return null;
+		List<Node> nodes = null;
 		if (null == id) {
 			nodes = new ArrayList<Node>();
-			nodes.add(new Node(0, "所有资源", ICON_ROOT, false, true, null));
+			Node root = getRootNode(treeId);
+			nodes.add(root);
 		} else {
-			nodes = getSubNodes(id);
+			nodes = getSubNodes(id, treeId);
 		}
 		return nodes;
 	}
 
-	private List<Node> getSubNodes(int id) {
+	public void doExpandNode(@Param("id") Integer id,
+			@Param("treeId") String treeId) {
+		sourceTreeManager.openNode(id, treeId);
+	}
+
+	public void doCollapseNode(@Param("id") Integer id,
+			@Param("treeId") String treeId) {
+		sourceTreeManager.closeNode(id, treeId);
+	}
+
+	private Node getRootNode(String treeId) {
+		Node root = new Node();
+		root.setId(0);
+		root.setIsParent(true);
+		root.setName("所有资源");
+		root.setIcon(iconDao.getSourceTreeIcon(0));
+		boolean isOpen = sourceTreeManager.isNodeOpen(0, treeId);
+		if (isOpen) {
+			root.setOpen(true);
+			root.setChildren(getSubNodes(0, treeId));
+		}
+		return root;
+	}
+
+	private List<Node> getSubNodes(int id, String treeId) {
 		List<Node> nodes = new ArrayList<Node>();
-		List<Source> sources = sourceService.getDirectSubSources(id);
+		List<Source> sources = sourceManager.getDirectSubSources(id);
 		if (null == sources)
 			return null;
 		Collections.sort(sources, SourceComparator.INSTANCE);
@@ -54,25 +78,34 @@ public class SourceTree {
 			int sourceId = source.getId();
 			node.setId(sourceId);
 			node.setName(source.getName());
-			node.setIsParent(sourceService.hasSubSources(sourceId));
-			int secCate = sourceCategoryService.getSecondCategoryId(source
-					.getCategoryId());
-			boolean isOk = sourceStatusService.isOk(sourceId);
 
-			switch (secCate) {
-			case SourceCategory.MACHINE:
-				node.setIcon(isOk ? ICON_MACHINE_OK : ICON_MACHINE_ERR);
-				break;
-			case SourceCategory.COMPONENT:
-				node.setIcon(ICON_COMPONENT);
-				break;
-			default:
-				node.setIcon(ICON_UNKNOW);
-				break;
+			String icon = getSourceTreeIcon(source);
+			node.setIcon(icon);
+
+			boolean hasSubsources = sourceManager.hasSubSources(sourceId);
+			node.setIsParent(hasSubsources);
+			if (hasSubsources && sourceTreeManager.isNodeOpen(sourceId, treeId)) {
+				node.setOpen(true);
+				node.setChildren(getSubNodes(sourceId, treeId));
 			}
 			nodes.add(node);
 		}
+
 		return nodes;
+	}
+
+	private String getSourceTreeIcon(Source source) {
+		String icon = null;
+		switch (source.getTypeId()) {
+		case SourceType.MACHINE:
+			int feature = source.isOk() ? Feature.AVAILABLE
+					: Feature.UNAVAILABLE;
+			icon = iconDao.getSourceTreeIcon(source.getTypeId(), feature);
+			break;
+		default:
+			icon = iconDao.getSourceTreeIcon(source.getTypeId());
+		}
+		return icon;
 	}
 
 }
@@ -83,9 +116,8 @@ class SourceComparator implements Comparator<Source> {
 
 	@Override
 	public int compare(Source s1, Source s2) {
-		if (s1.getCategoryId() != s2.getCategoryId())
-			return Integer.valueOf(s1.getCategoryId()).compareTo(
-					s2.getCategoryId());
+		if (s1.getTypeId() != s2.getTypeId())
+			return Integer.valueOf(s1.getTypeId()).compareTo(s2.getTypeId());
 
 		return Integer.valueOf(s1.getId()).compareTo(s2.getId());
 	}
@@ -108,17 +140,6 @@ class Node {
 
 	public Node() {
 		super();
-	}
-
-	public Node(int id, String name, String icon, boolean open,
-			boolean isParent, List<Node> children) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.icon = icon;
-		this.open = open;
-		this.isParent = isParent;
-		this.children = children;
 	}
 
 	public int getId() {

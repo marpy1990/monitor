@@ -3,6 +3,6 @@ define(function(require, exports, module) {
 	
 	var Sticky = require('js/component/sticky.js');
 
-	Sticky('.main-nav', "0px");
+	Sticky('.sidebar', "37.5px");
 
 });

@@ -1,3 +1,4 @@
-<div class="main-topBanner" style="background-image:url('/static/img/header-bg.png');background-repeat: repeat-x;">
+<link rel="stylesheet" href="/static/css/topBanner.css">
+<div class="main-topBanner">
 	<div><img src="/static/img/title.png"></div>
 </div>

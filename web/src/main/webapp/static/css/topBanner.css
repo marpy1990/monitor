@@ -1,0 +1,8 @@
+.main-topBanner{
+	background-image:url('/static/img/header-bg.png');
+	background-repeat: repeat-x;
+}
+
+.main-topBanner img{
+	height: 70px;
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sjtu.cit.monitor.dal.dao.SourceTreeStateDao">
+	<select id="isOpen" parameterType="sjtu.cit.monitor.dal.entity.SourceNode" resultType="boolean"><![CDATA[
+		select
+			ISOPEN
+		from 
+			SOURCE_TREE_STATE
+		where
+			SOURCEID=#{sourceId}
+		and	USERID=#{userId}
+		and TREEID=#{treeId}
+	]]></select>
+	
+	<select id="count" parameterType="sjtu.cit.monitor.dal.entity.SourceNode" resultType="int"><![CDATA[
+		select
+			count(*)
+		from 
+			SOURCE_TREE_STATE
+		where
+			SOURCEID=#{sourceId}
+		and	USERID=#{userId}
+		and TREEID=#{treeId}
+	]]></select>
+	
+	<select id="insert" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
+		insert into SOURCE_TREE_STATE (
+			SOURCEID,
+			TREEID,
+			USERID,
+			ISOPEN
+		) values(
+			#{sourceId},
+			#{treeId},
+			#{userId},
+			#{isOpen}
+		)
+	]]></select>
+	
+	<update id="update" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
+        update
+        	SOURCE_TREE_STATE
+        set
+        	ISOPEN=#{isOpen}
+        where
+        	SOURCEID=#{sourceId}
+        and TREEID=#{treeId}
+        and USERID=#{userId}
+    ]]></update>
+    
+</mapper>

@@ -1,6 +1,6 @@
 package sjtu.cit.monitor.api.cep.entity;
 
-public class SourceCategory {
+public class SourceType {
 
 	/**
 	 * 一级类目hardware的id
@@ -26,9 +26,7 @@ public class SourceCategory {
 
 	private String name;
 
-	private int parentId;
-
-	public SourceCategory() {
+	public SourceType() {
 		super();
 	}
 
@@ -36,23 +34,8 @@ public class SourceCategory {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
-	}
 }

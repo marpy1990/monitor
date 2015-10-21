@@ -32,11 +32,5 @@
     position: relative;
     background: #0c4174;
     margin-bottom: 7.5px;
-}
-
-.position-fixed{
-	position: fixed;
-	top: 0px;
-	padding-right: 250px;
-	z-index: 998;
+    z-index: 998;
 }

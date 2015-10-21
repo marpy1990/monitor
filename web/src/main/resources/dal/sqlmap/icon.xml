@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sjtu.cit.monitor.dal.dao.IconDao">
+	<select id="getSourceTypeIcon" parameterType="map" resultType="String"><![CDATA[
+		select
+			URL
+		from
+			SOURCE_TYPE_ICON
+		where
+			SOURCETYPEID=#{sourceTypeId}
+		and FEATURE|#{feature}=#{feature}
+		order by
+			FEATURE desc
+		limit 1
+	]]></select>
+	
+</mapper>
