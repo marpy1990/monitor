@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="/static/css/overview/layout.css">
+$control.setTemplate("overview/sidebar.vm").setParameter("modules", $modules)
+<div class="detail-content">
+	#if($modules.contains("topology"))
+	$control.setTemplate("overview/topology.vm")
+	#end
+	
+	#if($modules.contains("detail"))
+	$control.setTemplate("overview/detail.vm")
+	#end
+	
+	##$control.setTemplate("test.vm")
+	
+</div>
+<script type="text/javascript">seajs.use("js/overview/content.js")</script>

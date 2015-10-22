@@ -1,6 +1,3 @@
-#macro (active $targetName) 
-    #if ($!target==$!targetName) class="active" #end
-#end
 <link rel="stylesheet" href="/static/css/overview/sidebar.css">
 <div class="sidebar">
 	<div class="sidebar-graph">
@@ -8,9 +5,24 @@
 		<p>$!name</p>
 	</div>
 	
-	<ul>
-	  <li #active("detail")><a href="detail.html?sourceId=${sourceId}">基本信息</a></li>
-	  <li #active("probe")><a href="probe.html?sourceId=${sourceId}">探针控制</a></li>
+	<ul class="sidebar-ul">
+	
+	#if($modules.contains("topology"))
+	  <li module="topology"><a href="/overview.html?sourceId=$!{sourceId}#topology">系统拓扑</a></li>
+	#end
+	#if($modules.contains("detail"))
+	  <li module="detail"><a href="/overview.html?sourceId=$!{sourceId}#detail">基本信息</a></li>
+	#end
+	#if($modules.contains("lineChart"))
+	  <li module="lineChart"><a href="/overview.html?sourceId=$!{sourceId}#lineChart">折线图</a></li>
+	#end
+	#if($modules.contains("log"))
+	  <li module="log"><a href="/overview.html?sourceId=$!{sourceId}#log">日志信息</a></li>
+	#end
+	#if($modules.contains("probe"))
+	  <li module="probe"><a href="/overview.html?sourceId=$!{sourceId}#probe">探针控制</a></li>
+	#end
+	
 	</ul>
 </div>
 <script type="text/javascript">seajs.use("js/overview/sidebar.js")</script>

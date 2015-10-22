@@ -12,34 +12,29 @@ public class IconDaoImpl extends SqlSessionDaoSupport implements IconDao {
 
 	private static final String NAMESPACE = "sjtu.cit.monitor.dal.dao.IconDao";
 
-	private String querySourceTypeIcon(int sourceTypeId, int feature) {
+	private String querySourceIcon(int sourceId, int feature) {
 		Map<String, Integer> query = new HashMap<String, Integer>();
-		query.put("sourceTypeId", sourceTypeId);
+		query.put("sourceId", sourceId);
 		query.put("feature", feature);
 		String url = this.getSqlSession().selectOne(
-				NAMESPACE + ".getSourceTypeIcon", query);
-		if (null == url) {
-			query.put("sourceTypeId", -1);
-			url = this.getSqlSession().selectOne(
-					NAMESPACE + ".getSourceTypeIcon", query);
-		}
+				NAMESPACE + ".getSourceIcon", query);
 		return url;
 	}
 
 	@Override
-	public String getSourceTreeIcon(int sourceTypeId, int feature) {
+	public String getSourceTreeIcon(int sourceId, int feature) {
 		//size_flag位清0, 保证出16x16的小图
-		return querySourceTypeIcon(sourceTypeId, feature&~Feature.SIZE_LARGE);
+		return querySourceIcon(sourceId, feature&~Feature.SIZE_LARGE);
 	}
 
 	@Override
-	public String getSourceTreeIcon(int sourceTypeId) {
-		return querySourceTypeIcon(sourceTypeId, Feature.SIZE_NORMAL|Feature.AVAILABLE);
+	public String getSourceTreeIcon(int sourceId) {
+		return querySourceIcon(sourceId, Feature.SIZE_NORMAL|Feature.AVAILABLE);
 	}
 
 	@Override
-	public String getSourceSideBarIcon(int sourceTypeId) {
-		return querySourceTypeIcon(sourceTypeId, Feature.SIZE_LARGE|Feature.AVAILABLE);
+	public String getSourceSideBarIcon(int sourceId) {
+		return querySourceIcon(sourceId, Feature.SIZE_LARGE|Feature.AVAILABLE);
 	}
 
 }

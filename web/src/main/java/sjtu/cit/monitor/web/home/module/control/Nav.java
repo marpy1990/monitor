@@ -18,6 +18,9 @@ public class Nav {
 		String target = StringUtil.substringBetween(path, "/", "/");
 		if(null == target) target = StringUtil.substringBetween(path, "/", ".");
 		if(null == target) target = StringUtil.substringAfter(path, "/");
+		
+		//默认为根目录
+		if(StringUtil.isBlank(target)) target = "index";
 		context.put("target", target);
 	}
 	

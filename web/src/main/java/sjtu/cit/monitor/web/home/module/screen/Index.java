@@ -5,6 +5,6 @@ import com.alibaba.citrus.turbine.Navigator;
 public class Index {
 
 	public void execute(Navigator nav) {
-		nav.redirectTo("homeLink").withTarget("overview");
+		
 	}
 }

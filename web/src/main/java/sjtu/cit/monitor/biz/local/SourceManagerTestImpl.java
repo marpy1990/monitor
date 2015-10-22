@@ -1,75 +1,115 @@
 package sjtu.cit.monitor.biz.local;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import sjtu.cit.monitor.api.cep.SourceManager;
+import sjtu.cit.monitor.api.cep.entity.MachineState;
 import sjtu.cit.monitor.api.cep.entity.Source;
+import sjtu.cit.monitor.api.cep.entity.SourceState;
 
 public class SourceManagerTestImpl implements SourceManager {
 
-	private Map<Integer, List<Source>> tree = new HashMap<Integer, List<Source>>();
-	
-	private Map<Integer, Source> table = new HashMap<Integer, Source>();
+	private Map<Integer, Node> table = new HashMap<Integer, Node>();
 
 	public SourceManagerTestImpl() {
-		tree.put(
-				0,
-				Arrays.asList(newSource(1, "127.0.0.1", true, 3),
-						newSource(2, "192.168.0.30", false, 3),
-						newSource(3, "192.168.0.31", false, 3),
-						newSource(4, "rtm", false, 2)));
-		tree.put(
-				1,
-				Arrays.asList(newSource(11, "cpu", true, 4),
-						newSource(12, "memory", true, 4)));
-		tree.put(
-				2,
-				Arrays.asList(newSource(21, "cpu", true, 4),
-						newSource(22, "memory", true, 4)));
-		tree.put(
-				3,
-				Arrays.asList(newSource(31, "cpu", true, 4),
-						newSource(32, "memory", true, 4)));
-		tree.put(
-				4,
-				Arrays.asList(newSource(41, "getTotalTime()", true, 5),
-						newSource(42, "getIncreaseRate()", true, 5),
-						newSource(43, "queryForOverFlowDoEllipseHaHaHa()", true, 5)));
-		tree.put(
-				11,
-				Arrays.asList(newSource(111, "1", true, 4),
-						newSource(112, "2", true, 4),
-						newSource(113, "3", true, 4),
-						newSource(114, "4", true, 4)));
+		table.put(0, new Node());
+		newSource(100, "rtm", 0, Source.InternId.SYSTEM);
+		newSource(101, "软件", 100, Source.InternId.SOFTWARE);
+		newSource(102, "硬件", 100, Source.InternId.HARDWARE);
+		newSource(103, "日志", 100, Source.InternId.LOG);
+		
+		newSource(201, "127.0.0.1", 102, Source.InternId.MACHINE);
+		newSource(2010, "cpu", 201, Source.InternId.COMPONENT);
+		newSource(20101, "1", 2010, Source.InternId.COMPONENT);
+		newSource(20102, "2", 2010, Source.InternId.COMPONENT);
+		newSource(2011, "memory", 201, Source.InternId.COMPONENT);
+		newSource(202, "202.120.38.3", 102, Source.InternId.MACHINE);
+		newSource(203, "202.128.38.175", 102, Source.InternId.MACHINE);
+		
+		newSource(301, "进程", 101, Source.InternId.PROCESS);
+		newSource(302, "函数", 101, Source.InternId.FUNCTION);
+		newSource(303, "变量", 101, Source.InternId.VAR);
+		newSource(3020, "getTotal()", 302, Source.InternId.FUNCTION);
+		newSource(3021, "getAll()", 302, Source.InternId.FUNCTION);
+		
+		newSource(401, "access.log", 103, Source.InternId.LOG);
+		newSource(402, "jetty.log", 103, Source.InternId.LOG);
+		
+	}
+
+	private void newSource(int id, String name, int parentId, int type) {
+		Node node = new Node();
+		table.put(id, node);
+		node.id = id;
+		node.name = name;
+		node.type = type;
+		table.get(parentId).sub.add(node);
 	}
 
 	@Override
 	public Source getSource(int sourceId) {
-		if(!table.containsKey(sourceId)) return null;
-		else return table.get(sourceId);
-	}
-
-	@Override
-	public List<Source> getDirectSubSources(int sourceId) {
-		return tree.get(sourceId);
-	}
-
-	private Source newSource(int id, String name, boolean ok, int catId) {
+		Node node = table.get(sourceId);
 		Source source = new Source();
-		source.setId(id);
-		source.setName(name);
-		source.setOk(ok);
-		source.setTypeId(catId);
-		table.put(id, source);
+		source.setId(node.id);
+		source.setName(node.name);
 		return source;
 	}
 
 	@Override
-	public boolean hasSubSources(int sourceId) {
-		return tree.containsKey(sourceId);
+	public List<Source> getSourcesByRelation(int sourceId, int relation) {
+		List<Source> list = new ArrayList<Source>();
+		Node nodes = table.get(sourceId);
+		for (Node node : nodes.sub) {
+			list.add(getSource(node.id));
+		}
+		return list;
 	}
 
+	@Override
+	public boolean testRelation(int sourceId1, int sourceId2, int relation) {
+		Node node = table.get(sourceId1);
+		return node.type == sourceId2;
+	}
+
+	@Override
+	public int countSourcesByRelation(int sourceId, int relation) {
+		return getSourcesByRelation(sourceId, relation).size();
+	}
+
+	@Override
+	public SourceState getSourceState(int sourceId) {
+		return new State(sourceId);
+	}
+
+	@Override
+	public int getTypedSourceId(int sourceId) {
+		Node node = table.get(sourceId);
+		return node.type;
+	}
+
+}
+
+class State implements MachineState {
+
+	private int id;
+
+	public State(int id) {
+		this.id = id;
+	}
+
+	@Override
+	public boolean isAvailable() {
+		return id % 2 == 1;
+	}
+
+}
+
+class Node {
+	int id;
+	String name;
+	int type;
+	List<Node> sub = new ArrayList<Node>();
 }

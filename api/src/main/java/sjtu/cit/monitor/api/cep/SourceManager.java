@@ -2,30 +2,56 @@ package sjtu.cit.monitor.api.cep;
 
 import java.util.List;
 
+import sjtu.cit.monitor.api.cep.entity.Relation;
 import sjtu.cit.monitor.api.cep.entity.Source;
+import sjtu.cit.monitor.api.cep.entity.SourceState;
 
 public interface SourceManager {
 	
 	/**
 	 * 通过id 获取source
-	 * @param sourceId 资源id
+	 * @param sourceId 资源id，关于一些系统保留的id参见{@link Source.InternId}
 	 * @return 若sourceId不存在返回null
 	 */
 	public Source getSource(int sourceId);
 	
 	/**
-	 * 获取所有<b>直接</b>隶属于当前资源的子项<br/>
-	 * 等价于选取所有source.parentId=id的资源<br/>
-	 * @param sourceId 资源id
-	 * @return 若sourceId不存在返回null；若子项不存在返回空List
+	 * 获取所有与当前source有relation关系的资源
+	 * @param sourceId 资源id，关于一些系统保留的id参见{@link Source.InternId}
+	 * @param relation 代表一种关系{@link Relation}
+	 * @return 若sourceId不存在返回null，否则至少会返回一个空的List
 	 */
-	public List<Source> getDirectSubSources(int sourceId);
+	public List<Source> getSourcesByRelation(int sourceId, int relation);
 	
 	/**
-	 * 判断当前资源是否存在子项
+	 * 获取所有与当前source有relation关系的资源的数目
+	 * @param sourceId 资源id，关于一些系统保留的id参见{@link Source.InternId}
+	 * @param relation 代表一种关系{@link Relation}
+	 * @return 若sourceId不存在返回0
+	 */
+	public int countSourcesByRelation(int sourceId, int relation);
+	
+	/**
+	 * 检查source1与source2是否具有relation关系
+	 * @param sourceId1
+	 * @param sourceId2
+	 * @param relation
+	 * @return 当且仅当source1与source存在且具有relation关系时才为真
+	 */
+	public boolean testRelation(int sourceId1, int sourceId2, int relation);
+	
+	/**
+	 * 获取source的状态
 	 * @param sourceId
 	 * @return
 	 */
-	public boolean hasSubSources(int sourceId);
+	public SourceState getSourceState(int sourceId);
+	
+	/**
+	 * 获取代表其类型的资源id
+	 * @param sourceId
+	 * @return
+	 */
+	public int getTypedSourceId(int sourceId);
 
 }

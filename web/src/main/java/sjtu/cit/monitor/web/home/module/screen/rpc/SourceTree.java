@@ -8,8 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sjtu.cit.monitor.api.cep.SourceManager;
+import sjtu.cit.monitor.api.cep.entity.MachineState;
+import sjtu.cit.monitor.api.cep.entity.Relation;
 import sjtu.cit.monitor.api.cep.entity.Source;
-import sjtu.cit.monitor.api.cep.entity.SourceType;
 import sjtu.cit.monitor.biz.SourceTreeManager;
 import sjtu.cit.monitor.dal.dao.IconDao;
 import sjtu.cit.monitor.dal.entity.Feature;
@@ -55,21 +56,24 @@ public class SourceTree {
 
 	private Node getRootNode(String treeId) {
 		Node root = new Node();
-		root.setId(0);
+		int sourceId = Source.InternId.ROOT;
+		root.setId(sourceId);
 		root.setIsParent(true);
 		root.setName("所有资源");
-		root.setIcon(iconDao.getSourceTreeIcon(0));
-		boolean isOpen = sourceTreeManager.isNodeOpen(0, treeId);
+		root.setIcon(iconDao.getSourceTreeIcon(sourceId));
+		boolean isOpen = sourceTreeManager.isNodeOpen(sourceId, treeId);
 		if (isOpen) {
 			root.setOpen(true);
-			root.setChildren(getSubNodes(0, treeId));
+			root.setChildren(getSubNodes(sourceId, treeId));
 		}
 		return root;
 	}
 
 	private List<Node> getSubNodes(int id, String treeId) {
 		List<Node> nodes = new ArrayList<Node>();
-		List<Source> sources = sourceManager.getDirectSubSources(id);
+
+		List<Source> sources = sourceManager.getSourcesByRelation(id,
+				Relation.PART);
 		if (null == sources)
 			return null;
 		Collections.sort(sources, SourceComparator.INSTANCE);
@@ -79,10 +83,11 @@ public class SourceTree {
 			node.setId(sourceId);
 			node.setName(source.getName());
 
-			String icon = getSourceTreeIcon(source);
+			String icon = getSourceTreeIcon(sourceId);
 			node.setIcon(icon);
 
-			boolean hasSubsources = sourceManager.hasSubSources(sourceId);
+			boolean hasSubsources = sourceManager.countSourcesByRelation(
+					sourceId, Relation.PART) > 0;
 			node.setIsParent(hasSubsources);
 			if (hasSubsources && sourceTreeManager.isNodeOpen(sourceId, treeId)) {
 				node.setOpen(true);
@@ -94,17 +99,20 @@ public class SourceTree {
 		return nodes;
 	}
 
-	private String getSourceTreeIcon(Source source) {
+	private String getSourceTreeIcon(int sourceId) {
 		String icon = null;
-		switch (source.getTypeId()) {
-		case SourceType.MACHINE:
-			int feature = source.isOk() ? Feature.AVAILABLE
+		int feature = Feature.NORMAL;
+		// 对于机器资源需要考虑其状态
+		if (sourceManager.testRelation(sourceId, Source.InternId.MACHINE,
+				Relation.TYPE)) {
+			MachineState state = (MachineState) sourceManager
+					.getSourceState(sourceId);
+			feature |= state.isAvailable() ? Feature.AVAILABLE
 					: Feature.UNAVAILABLE;
-			icon = iconDao.getSourceTreeIcon(source.getTypeId(), feature);
-			break;
-		default:
-			icon = iconDao.getSourceTreeIcon(source.getTypeId());
 		}
+
+		int typedSourceId = sourceManager.getTypedSourceId(sourceId);
+		icon = iconDao.getSourceTreeIcon(typedSourceId, feature);
 		return icon;
 	}
 
@@ -116,9 +124,6 @@ class SourceComparator implements Comparator<Source> {
 
 	@Override
 	public int compare(Source s1, Source s2) {
-		if (s1.getTypeId() != s2.getTypeId())
-			return Integer.valueOf(s1.getTypeId()).compareTo(s2.getTypeId());
-
 		return Integer.valueOf(s1.getId()).compareTo(s2.getId());
 	}
 

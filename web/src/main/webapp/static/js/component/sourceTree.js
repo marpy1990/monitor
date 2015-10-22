@@ -1,3 +1,6 @@
+/**
+ * 生成source tree的控件
+ */
 define(function(require, exports, module) {
 	require('jquery');
 	require('ztree');
@@ -10,6 +13,7 @@ define(function(require, exports, module) {
 
 	function Tree(node) {
 		var self = this;
+		this._onClick = null;
 		
 		$(document).ready(function() {
 
@@ -36,7 +40,8 @@ define(function(require, exports, module) {
 		}
 
 		function onClick(event, treeId, treeNode) {
-			self._onClick(treeNode.id);
+			if(self._onClick !=null)
+				self._onClick(treeNode.id);
 		}
 
 		function onExpand(event, treeId, treeNode) {
