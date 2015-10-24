@@ -13,34 +13,64 @@ define(function(require, exports, module) {
 
 	function Tree(node) {
 		var self = this;
+		var treeId = $(node).attr('id');
+		var spaceId;
+		var rMenu = $("<div class='rMenu'><ul></ul></div>");
 		this._onClick = null;
-		
-		$(document).ready(function() {
 
-			var setting = {
+		$(node).after(rMenu);
+		init();
+
+		function init(msg) {
+			$.ajax({
+				type : 'POST',
+				url : "/rpc/source_tree/getViewSpaces.json",
+				data : {
+					treeId : treeId
+				},
+				success : function(msg) {
+					rMenuUl = rMenu.children('ul');
+					rMenuUl.empty();
+					spaceId = msg.current;
+					msg.spaces.each(function(){
+						var li = $("<li/>");
+						li.attr("spaceId", this.id);
+						li.text(this.name);
+						rMenuUl.append(li);
+					});
+					$.fn.zTree.init($(node), setting(), null);
+				}
+			});
+		}
+
+		this.click = function(callback) {
+			self._onClick = callback;
+		}
+		
+		function setting(){
+			return {
 				async : {
 					enable : true,
 					url : "/rpc/source_tree/getNodes.json",
-					autoParam : [ "id", "name", "level" ],
-					otherParam : [ "treeId", $(node).attr('id') ]
+					autoParam : [ "id" ],
+					otherParam : [ "treeId", treeId, "spaceId", spaceId ]
+				},
+
+				view : {
+					dblClickExpand : false
 				},
 
 				callback : {
 					onExpand : onExpand,
 					onCollapse : onCollapse,
-					onClick : onClick
+					onClick : onClick,
+					onRightClick : onRightClick
 				}
 			};
-
-			$.fn.zTree.init($(node), setting, null);
-		});
-
-		this.click = function(callback) {
-			self._onClick = callback;
 		}
 
 		function onClick(event, treeId, treeNode) {
-			if(self._onClick !=null)
+			if (self._onClick != null)
 				self._onClick(treeNode.id);
 		}
 
@@ -51,6 +81,7 @@ define(function(require, exports, module) {
 				data : {
 					id : treeNode.id,
 					treeId : treeId,
+					spaceId : spaceId
 				}
 			});
 		}
@@ -62,7 +93,29 @@ define(function(require, exports, module) {
 				data : {
 					id : treeNode.id,
 					treeId : treeId,
+					spaceId : spaceId
 				}
+			});
+		}
+
+		function OnRightClick(event, treeId, treeNode) {
+			zTree.cancelSelectedNode();
+			showRMenu(event.clientX, event.clientY);
+		}
+
+		function showRMenu(x, y) {
+			rMenu.show();
+			rMenu.css({
+				"top" : y + "px",
+				"left" : x + "px",
+				"visibility" : "visible"
+			});
+			$("body").bind("mousedown", onBodyMouseDown);
+		}
+
+		function onBodyMouseDown(event) {
+			rMenu.css({
+				"visibility" : "hidden"
 			});
 		}
 

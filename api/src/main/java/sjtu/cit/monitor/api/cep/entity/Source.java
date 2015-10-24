@@ -1,9 +1,20 @@
 package sjtu.cit.monitor.api.cep.entity;
 
-public class Source {
+/**
+ * source是系统中可以监控的最小单位<br/>
+ * source不仅仅对应实体，也可以是一种概念，例如对于“硬件”这一概念也可以称之为source<br/>
+ * source通过id唯一确定，但允许重名<br/>
+ * 系统预先保留了一些sourceId，这些id一般作为类目域下用于标识sourceType的用途，但用户也可以创建自己的关系视图来做新的解释<br/>
+ * 
+ * source本身已经可以通过视图的方式表达派生关系，故禁止其被继承
+ * 
+ * @author guhua.gh
+ *
+ */
+public final class Source {
 
 	/**
-	 * 系统预留的保留sourceId
+	 * 系统预留的保留sourceId, 一般在类目作用域下发挥作用
 	 * 
 	 * @author guhua.gh
 	 *
@@ -58,6 +69,12 @@ public class Source {
 		 * 代表变量
 		 */
 		public static final int VAR = 9;
+		
+		/**
+		 * 代表概念
+		 */
+		public static final int CONCEPT = 10;
+		
 	}
 
 	private int id;

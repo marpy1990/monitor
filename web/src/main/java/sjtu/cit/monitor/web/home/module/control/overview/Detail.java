@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sjtu.cit.monitor.api.cep.SourceManager;
+import sjtu.cit.monitor.api.cep.SourceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
 
 import com.alibaba.citrus.turbine.Context;
@@ -16,7 +16,7 @@ import com.alibaba.citrus.turbine.dataresolver.Param;
 public class Detail {
 	
 	@Autowired
-	private SourceManager sourceManager;
+	private SourceService sourceManager;
 	
 	public void execute(Context context, @Param("sourceId") Integer sourceId){
 		if (null == sourceId) sourceId = 0;

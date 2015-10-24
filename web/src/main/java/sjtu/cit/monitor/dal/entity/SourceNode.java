@@ -8,6 +8,8 @@ package sjtu.cit.monitor.dal.entity;
 public class SourceNode {
 
 	private int sourceId;
+	
+	private int spaceId;
 
 	private String treeId;
 
@@ -45,5 +47,13 @@ public class SourceNode {
 
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public int getSpaceId() {
+		return spaceId;
+	}
+
+	public void setSpaceId(int spaceId) {
+		this.spaceId = spaceId;
 	}
 }

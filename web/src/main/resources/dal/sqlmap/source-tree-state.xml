@@ -8,47 +8,72 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select
 			ISOPEN
 		from 
-			SOURCE_TREE_STATE
+			SOURCE_NODE_STATE
 		where
 			SOURCEID=#{sourceId}
+		and SPACEID=#{spaceId}
 		and	USERID=#{userId}
 		and TREEID=#{treeId}
 	]]></select>
 	
-	<select id="count" parameterType="sjtu.cit.monitor.dal.entity.SourceNode" resultType="int"><![CDATA[
+	<select id="countNode" parameterType="sjtu.cit.monitor.dal.entity.SourceNode" resultType="int"><![CDATA[
 		select
 			count(*)
 		from 
-			SOURCE_TREE_STATE
+			SOURCE_NODE_STATE
 		where
 			SOURCEID=#{sourceId}
+		and SPACEID=#{spaceId}
 		and	USERID=#{userId}
 		and TREEID=#{treeId}
 	]]></select>
 	
-	<select id="insert" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
-		insert into SOURCE_TREE_STATE (
+	<select id="insertNode" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
+		insert into SOURCE_NODE_STATE (
 			SOURCEID,
+			SPACEID,
 			TREEID,
 			USERID,
 			ISOPEN
 		) values(
 			#{sourceId},
+			#{spaceId}
 			#{treeId},
 			#{userId},
 			#{isOpen}
 		)
 	]]></select>
 	
-	<update id="update" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
+	<update id="updateNode" parameterType="sjtu.cit.monitor.dal.entity.SourceNode"><![CDATA[
         update
-        	SOURCE_TREE_STATE
+        	SOURCE_NODE_STATE
         set
         	ISOPEN=#{isOpen}
         where
         	SOURCEID=#{sourceId}
+        and SPACEID=#{spaceId}
         and TREEID=#{treeId}
         and USERID=#{userId}
     ]]></update>
+    
+    <select id="getCurrentSpaceId" parameterType="sjtu.cit.monitor.dal.entity.TreeNode" resultType="int"><![CDATA[
+		select
+			CURRENT_SPACEID
+		from 
+			SOURCE_TREE_STATE
+		where
+	        USERID=#{userId}
+		and TREEID=#{treeId}
+	]]></select>
+	
+	<update id="setCurrentSpaceId" parameterType="sjtu.cit.monitor.dal.entity.TreeNode"><![CDATA[
+		update
+        	SOURCE_TREE_STATE
+        set
+        	CURRENT_SPACEID=#{currentSpaceId}
+        where
+            TREEID=#{treeId}
+        and USERID=#{userId}
+	]]></update>
     
 </mapper>

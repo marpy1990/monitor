@@ -5,7 +5,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sjtu.cit.monitor.api.cep.SourceManager;
+import sjtu.cit.monitor.api.cep.SourceService;
+import sjtu.cit.monitor.api.cep.SourceViewService;
+import sjtu.cit.monitor.api.cep.entity.ViewSpace;
 import sjtu.cit.monitor.api.cep.entity.Source;
 
 import com.alibaba.citrus.turbine.Context;
@@ -21,7 +23,10 @@ public class Overview {
 	private static final String PROBE = "probe";
 
 	@Autowired
-	private SourceManager sourceManager;
+	private SourceService sourceService;
+
+	@Autowired
+	private SourceViewService sourceViewService;
 
 	public void execute(Context context, @Param("sourceId") Integer sourceId,
 			Navigator nav) {
@@ -37,25 +42,32 @@ public class Overview {
 
 	private Set<String> getShowModules(int sourceId) {
 		Set<String> modules = new HashSet<String>();
-		switch (sourceManager.getTypedSourceId(sourceId)) {
-		case Source.InternId.MACHINE:
+		if (sourceViewService.existsPath(sourceId, Source.InternId.MACHINE,
+				ViewSpace.TYPE)) {
 			modules.add(Overview.DETAIL);
 			modules.add(Overview.PROBE);
-			break;
-		case Source.InternId.COMPONENT:
+			return modules;
+		}
+		if (sourceViewService.existsPath(sourceId, Source.InternId.COMPONENT,
+				ViewSpace.TYPE)) {
 			modules.add(Overview.DETAIL);
 			modules.add(Overview.LINE_CHART);
-			break;
-		case Source.InternId.SOFTWARE:
+			return modules;
+		}
+		if (sourceViewService.existsPath(sourceId, Source.InternId.SOFTWARE,
+				ViewSpace.TYPE)) {
 			modules.add(Overview.TOPOLOGY);
 			modules.add(Overview.DETAIL);
-			break;
-		case Source.InternId.FUNCTION:
+			return modules;
+		}
+		if (sourceViewService.existsPath(sourceId, Source.InternId.FUNCTION,
+				ViewSpace.TYPE)) {
 			modules.add(Overview.DETAIL);
 			modules.add(Overview.LOG);
-		default:
-			modules.add(Overview.DETAIL);
+			return modules;
 		}
+
+		modules.add(Overview.DETAIL);
 		return modules;
 	}
 }

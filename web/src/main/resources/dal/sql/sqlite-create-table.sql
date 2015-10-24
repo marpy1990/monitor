@@ -4,12 +4,20 @@ create table USER (
     PASSWORD   TEXT
 );
 
-create table SOURCE_TREE_STATE (
+create table SOURCE_NODE_STATE (
 	SOURCEID  INTEGER               NOT NULL,
+	SPACEID   INTEGER               NOT NULL,
 	USERID    INTEGER               NOT NULL,
 	TREEID    TEXT                  NOT NULL,
 	ISOPEN    BOOLEAN               NOT NULL,
-	constraint pk_SOURCE_TREE_STATE PRIMARY KEY (SOURCEID, USERID, TREEID)
+	constraint pk_SOURCE_NODE_STATE PRIMARY KEY (SOURCEID, SPACEID, USERID, TREEID)
+);
+
+create table SOURCE_TREE_STATE (
+	USERID             INTEGER               NOT NULL,
+	TREEID             TEXT                  NOT NULL,
+	CURRENT_SPACEID    INTEGER               NOT NULL,
+	constraint pk_SOURCE_TREE_STATE PRIMARY KEY (USERID, TREEID)
 );
 
 create table SOURCE_ICON(
