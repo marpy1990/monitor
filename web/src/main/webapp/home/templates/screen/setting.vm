@@ -1,0 +1,6 @@
+<link rel="stylesheet" href="/static/css/setting/layout.css">
+$control.setTemplate("setting/sidebar.vm")
+<div class="detail-content">
+	$control.setTemplate("setting/viewspace.vm")
+</div>
+<script type="text/javascript">seajs.use("js/setting/content.js")</script>

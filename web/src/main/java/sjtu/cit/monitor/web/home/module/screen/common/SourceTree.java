@@ -35,6 +35,8 @@ public class SourceTree {
 
 	@Autowired
 	private ViewSpaceService viewSpaceService;
+	
+	private Integer i=0;
 
 	public ViewSpaceState doGetViewSpaces(@Param("treeId") String treeId) {
 //		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
@@ -54,11 +56,37 @@ public class SourceTree {
 
 	public List<Node> doGetNodes(@Param("id") Integer id,
 			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
-		if (StringUtil.isBlank(treeId) || null == spaceId)
-			return null;
-		if (null == id)
-			id = Source.InternId.ROOT;
-		List<Node> nodes = getSubNodes(id, spaceId, treeId);
+//		if (StringUtil.isBlank(treeId) || null == spaceId)
+//			return null;
+//		if (null == id)
+//			id = Source.InternId.ROOT;
+//		List<Node> nodes = getSubNodes(id, spaceId, treeId);
+//		return nodes;
+		List<Node> nodes = new ArrayList<Node>();
+		if (null == id){
+			Node node = new Node();
+			node.setId(0);
+			node.setName("所有");
+			node.setIsParent(true);
+			nodes.add(node);
+		}
+		else{
+			Node node = new Node();
+			node.setId(++i);
+			node.setName(i.toString());
+			node.setIsParent(i%2==0);
+			nodes.add(node);
+			node = new Node();
+			node.setId(++i);
+			node.setName(i.toString());
+			node.setIsParent(i%2==0);
+			nodes.add(node);
+			node = new Node();
+			node.setId(++i);
+			node.setName(i.toString());
+			node.setIsParent(i%2==0);
+			nodes.add(node);
+		}
 		return nodes;
 	}
 

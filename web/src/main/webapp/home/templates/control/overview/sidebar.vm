@@ -8,19 +8,19 @@
 	<ul class="sidebar-ul">
 	
 	#if($modules.contains("topology"))
-	  <li module="topology"><a href="/overview.html?sourceId=$!{sourceId}#topology">系统拓扑</a></li>
+	  <li module="topology"><a href="#topology">系统拓扑</a></li>
 	#end
 	#if($modules.contains("detail"))
-	  <li module="detail"><a href="/overview.html?sourceId=$!{sourceId}#detail">基本信息</a></li>
+	  <li module="detail"><a href="#detail">基本信息</a></li>
 	#end
 	#if($modules.contains("lineChart"))
-	  <li module="lineChart"><a href="/overview.html?sourceId=$!{sourceId}#lineChart">折线图</a></li>
+	  <li module="lineChart"><a href="#lineChart">折线图</a></li>
 	#end
 	#if($modules.contains("log"))
-	  <li module="log"><a href="/overview.html?sourceId=$!{sourceId}#log">日志信息</a></li>
+	  <li module="log"><a href="#log">日志信息</a></li>
 	#end
 	#if($modules.contains("probe"))
-	  <li module="probe"><a href="/overview.html?sourceId=$!{sourceId}#probe">探针控制</a></li>
+	  <li module="probe"><a href="#probe">探针控制</a></li>
 	#end
 	
 	</ul>

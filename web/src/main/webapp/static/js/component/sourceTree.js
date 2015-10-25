@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 		var self = this;
 		var treeId = $(node).attr('id');
 		var spaceId;
-		var rMenu = $("<ul class='dropdown-menu rMenu'></ul>");
+		var rMenu = $("<ul class='dropdown-menu rMenu' style='position:fixed'></ul>");
 		var _setting = {
 			async : {
 				enable : true,
@@ -49,6 +49,7 @@ define(function(require, exports, module) {
 				success : function(msg) {
 					rMenu.empty();
 					spaceId = msg.current;
+					rMenu.append("<li class='text-center'><small>切换资源视图</small></li>");
 					rMenu.append("<li role='separator' class='divider'></li>");
 					$.each(msg.spaces, function() {
 						var li=$("<li/>")
@@ -58,7 +59,7 @@ define(function(require, exports, module) {
 						li.append(a);
 						li.attr("spaceId", this.id);
 						small.text(this.name + "域");
-						if(this.id==spaceId) li.addClass("active disabled");
+						if(this.id==spaceId) li.addClass("active");
 						rMenu.append(li);
 					});
 
@@ -105,7 +106,7 @@ define(function(require, exports, module) {
 		}
 
 		function onRightClick(event, treeId, treeNode) {
-			zTree.cancelSelectedNode();
+			$.fn.zTree.getZTreeObj(treeId).cancelSelectedNode();
 			showRMenu(event.clientX, event.clientY);
 		}
 

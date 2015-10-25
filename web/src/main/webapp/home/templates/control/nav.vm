@@ -4,10 +4,11 @@
 <link rel="stylesheet" href="/static/css/nav.css">
 <div class="main-nav">
 	<ul>
-		<li #active("overview") #active("index")><a href="/">概览</a></li>
-		<li #active("dashboard")><a href="/dashboard.html">仪表板</a></li>
-		<li #active("predict")><a href="/predict.html">实时预测</a></li>
-		<li #active("performance")><a href="/performance.html">性能预测</a></li>
+		<li #active("overview") #active("index")><a href="/"><small>概览</small></a></li>
+		<li #active("dashboard")><a href="/dashboard.html"><small>仪表板</small></a></li>
+		<li #active("predict")><a href="/predict.html"><small>实时预测</small></a></li>
+		<li #active("performance")><a href="/performance.html"><small>性能预测</small></a></li>
+		<li #active("setting")><a href="/setting.html"><small>系统设置</small></a></li>
 	</ul>
 </div>
 <script type="text/javascript">seajs.use("js/nav.js")</script>

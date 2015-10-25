@@ -1,0 +1,19 @@
+.sidebar{
+	position: absolute;
+	top: 50px;
+}
+
+.detail-content{
+	position: relative;
+	margin-left: 205px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.anchor {
+    padding-top: 30px;
+}
+
+.anchor .panel {
+	margin-bottom: 0px;
+}

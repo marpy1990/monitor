@@ -32,7 +32,6 @@ public class Sidebar {
 		String icon = getIcon(sourceId);
 		context.put("icon", icon);
 		context.put("name", source.getName());
-		context.put("sourceId", sourceId);
 	}
 
 	/**

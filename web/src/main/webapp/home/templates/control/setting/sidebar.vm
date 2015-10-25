@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="/static/css/overview/sidebar.css">
+<div class="sidebar">
+	<div class="sidebar-graph">
+		<img src="/static/img/sourceTree/config_large.png">
+		<p>系统设置</p>
+	</div>
+	
+	<ul class="sidebar-ul">
+	  <li module="viewspace"><a href="#viewspace">资源视图</a></li>
+	</ul>
+</div>
+<script type="text/javascript">seajs.use("js/setting/sidebar.js")</script>
