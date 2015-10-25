@@ -3,9 +3,12 @@ define(function(require, exports, module) {
 
 	var Tree = require('js/component/sourceTree.js');
 
-	var tree = Tree('#right-source-tree');
-	tree.click(function(sourceId) {
-		location.href = "/overview.html?sourceId=" + sourceId;
+	var tree = Tree('#right-source-tree', {
+		callback:{
+			onClick : function(event, treeId, treeNode){
+				
+			}
+		}
 	});
 
 });

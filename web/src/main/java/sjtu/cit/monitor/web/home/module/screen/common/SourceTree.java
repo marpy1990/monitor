@@ -1,6 +1,7 @@
-package sjtu.cit.monitor.web.home.module.screen.rpc;
+package sjtu.cit.monitor.web.home.module.screen.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,12 +37,18 @@ public class SourceTree {
 	private ViewSpaceService viewSpaceService;
 
 	public ViewSpaceState doGetViewSpaces(@Param("treeId") String treeId) {
-		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
-		Collections.sort(spaces, SpaceComparator.INSTANCE);
+//		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
+//		Collections.sort(spaces, SpaceComparator.INSTANCE);
+//		ViewSpaceState state = new ViewSpaceState();
+//		state.setSpaces(spaces);
+//		int spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
+//		state.setCurrent(spaceId);
 		ViewSpaceState state = new ViewSpaceState();
-		state.setSpaces(spaces);
-		int spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
-		state.setCurrent(spaceId);
+		state.setCurrent(2);
+		ViewSpace v1 = new ViewSpace();v1.setId(1);v1.setName("测试1");
+		ViewSpace v2 = new ViewSpace();v2.setId(2);v2.setName("测试2");
+		ViewSpace v3 = new ViewSpace();v3.setId(3);v3.setName("测试3");
+		state.setSpaces(Arrays.asList(v1,v2,v3));
 		return state;
 	}
 

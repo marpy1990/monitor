@@ -7,77 +7,83 @@ define(function(require, exports, module) {
 
 	module.exports = tree;
 
-	function tree(node) {
-		return new Tree(node);
+	function tree(node, setting) {
+		return new Tree(node, setting);
 	}
 
-	function Tree(node) {
+	function Tree(node, setting) {
 		var self = this;
 		var treeId = $(node).attr('id');
 		var spaceId;
-		var rMenu = $("<div class='rMenu'><ul></ul></div>");
-		this._onClick = null;
+		var rMenu = $("<ul class='dropdown-menu rMenu'></ul>");
+		var _setting = {
+			async : {
+				enable : true,
+				url : "/common/source_tree/getNodes.json",
+				autoParam : [ "id" ],
+				otherParam : [ "treeId", treeId, "spaceId", spaceId ]
+			},
 
+			view : {
+				dblClickExpand : false
+			},
+
+			callback : {
+				onExpand : onExpand,
+				onCollapse : onCollapse,
+				onRightClick : onRightClick
+			}
+		};
+		
+		$.extend(true, _setting, setting);
 		$(node).after(rMenu);
 		init();
 
 		function init(msg) {
 			$.ajax({
 				type : 'POST',
-				url : "/rpc/source_tree/getViewSpaces.json",
+				url : "/common/source_tree/getViewSpaces.json",
 				data : {
 					treeId : treeId
 				},
 				success : function(msg) {
-					rMenuUl = rMenu.children('ul');
-					rMenuUl.empty();
+					rMenu.empty();
 					spaceId = msg.current;
-					msg.spaces.each(function(){
-						var li = $("<li/>");
+					rMenu.append("<li role='separator' class='divider'></li>");
+					$.each(msg.spaces, function() {
+						var li=$("<li/>")
+						var a=$("<a class='text-center' href='javascript:void(0)'/>");
+						var small=$("<small/>");
+						a.append(small);
+						li.append(a);
 						li.attr("spaceId", this.id);
-						li.text(this.name);
-						rMenuUl.append(li);
+						small.text(this.name + "域");
+						if(this.id==spaceId) li.addClass("active disabled");
+						rMenu.append(li);
 					});
-					$.fn.zTree.init($(node), setting(), null);
+
+					rMenu.css({
+						"min-width" : "50px",
+					});
+					$.fn.zTree.init($(node), exSetting(), null);
 				}
 			});
 		}
-
-		this.click = function(callback) {
-			self._onClick = callback;
-		}
 		
-		function setting(){
-			return {
-				async : {
-					enable : true,
-					url : "/rpc/source_tree/getNodes.json",
-					autoParam : [ "id" ],
-					otherParam : [ "treeId", treeId, "spaceId", spaceId ]
-				},
-
-				view : {
-					dblClickExpand : false
-				},
-
-				callback : {
-					onExpand : onExpand,
-					onCollapse : onCollapse,
-					onClick : onClick,
-					onRightClick : onRightClick
-				}
+		function exSetting(){
+			var asynP = {
+					async :{
+						otherParam : [ "treeId", treeId, "spaceId", spaceId ]
+					}
 			};
-		}
-
-		function onClick(event, treeId, treeNode) {
-			if (self._onClick != null)
-				self._onClick(treeNode.id);
+			return $.extend(true, {}, _setting, asynP);
+			
 		}
 
 		function onExpand(event, treeId, treeNode) {
 			$.ajax({
 				type : 'POST',
-				url : "/rpc/source_tree/expandNode.json",
+				url : "/common/source_tree/expandNode.json",
 				data : {
 					id : treeNode.id,
 					treeId : treeId,
@@ -89,7 +95,7 @@ define(function(require, exports, module) {
 		function onCollapse(event, treeId, treeNode) {
 			$.ajax({
 				type : 'POST',
-				url : "/rpc/source_tree/collapseNode.json",
+				url : "/common/source_tree/collapseNode.json",
 				data : {
 					id : treeNode.id,
 					treeId : treeId,
@@ -98,7 +104,7 @@ define(function(require, exports, module) {
 			});
 		}
 
-		function OnRightClick(event, treeId, treeNode) {
+		function onRightClick(event, treeId, treeNode) {
 			zTree.cancelSelectedNode();
 			showRMenu(event.clientX, event.clientY);
 		}
