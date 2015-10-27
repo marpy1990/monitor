@@ -7,10 +7,10 @@
 	  <div class="panel-body">
 	  	<div class="viewspace-container container-fluid">
 	  		<div class="view-tree col-md-5">
-				<ul id="view-tree-left" class="ztree"></ul>
+				<div id="view-tree-left" class="ztree"></div>
 			</div>
 			<div class="view-tree col-md-5 col-md-offset-2">
-				<ul id="view-tree-right" class="ztree"></ul>
+				<div id="view-tree-right" class="ztree"></div>
 			</div>
 	  	</div>
   	  </div>

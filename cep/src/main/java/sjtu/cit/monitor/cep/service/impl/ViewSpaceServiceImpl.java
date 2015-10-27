@@ -1,4 +1,4 @@
-package sjtu.cit.monitor.biz.local;
+package sjtu.cit.monitor.cep.service.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
 import sjtu.cit.monitor.api.cep.entity.ViewSpace;
 
-public class ViewSpaceServiceTestImpl implements ViewSpaceService{
+public class ViewSpaceServiceImpl implements ViewSpaceService{
 
 	@Override
 	public List<ViewSpace> getViewSpaces() {

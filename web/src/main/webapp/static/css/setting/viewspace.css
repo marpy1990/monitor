@@ -1,10 +1,10 @@
-.viewspace-container{
+.viewspace-container {
 	width: 100%;
 	height: 350px;
-	overflow: auto;
 }
 
-.view-tree{
+.view-tree {
 	border: 1px solid #ccc;
-	min-height:100%;
+	height: 100%;
+	overflow: auto;
 }

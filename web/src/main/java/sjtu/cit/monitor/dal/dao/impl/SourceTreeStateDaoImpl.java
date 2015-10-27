@@ -20,11 +20,9 @@ public class SourceTreeStateDaoImpl extends SqlSessionDaoSupport implements
 
 	@Override
 	public void updateNodeState(SourceNode node) {
-		int count = this.getSqlSession().selectOne(NAMESPACE + ".countNode", node);
+		int count = this.getSqlSession().update(NAMESPACE + ".updateNode", node);
 		if (count == 0)
 			this.getSqlSession().insert(NAMESPACE + ".insertNode", node);
-		else
-			this.getSqlSession().update(NAMESPACE + ".updateNode", node);
 	}
 
 	@Override
@@ -35,7 +33,9 @@ public class SourceTreeStateDaoImpl extends SqlSessionDaoSupport implements
 
 	@Override
 	public void setCurrentSpaceId(TreeNode tree) {
-		this.getSqlSession().selectOne(NAMESPACE + ".setCurrentSpaceId", tree);
+		int count = this.getSqlSession().update(NAMESPACE + ".updateSpace", tree);
+		if(count == 0)
+			this.getSqlSession().insert(NAMESPACE + ".insertSpace", tree);
 	}
 
 }

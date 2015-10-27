@@ -1,15 +1,15 @@
 package sjtu.cit.monitor.web.home.module.screen.common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sjtu.cit.monitor.api.cep.SourceService;
-import sjtu.cit.monitor.api.cep.SourceViewService;
 import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
 import sjtu.cit.monitor.api.cep.entity.ViewSpace;
@@ -28,65 +28,29 @@ public class SourceTree {
 	private SourceService sourceService;
 
 	@Autowired
-	private SourceViewService sourceViewService;
+	private ViewSpaceService viewSpaceService;
 
 	@Autowired
 	private SourceTreeManager sourceTreeManager;
-
-	@Autowired
-	private ViewSpaceService viewSpaceService;
 	
-	private Integer i=0;
 
 	public ViewSpaceState doGetViewSpaces(@Param("treeId") String treeId) {
-//		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
-//		Collections.sort(spaces, SpaceComparator.INSTANCE);
-//		ViewSpaceState state = new ViewSpaceState();
-//		state.setSpaces(spaces);
-//		int spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
-//		state.setCurrent(spaceId);
+		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
+		Collections.sort(spaces, SpaceComparator.INSTANCE);
 		ViewSpaceState state = new ViewSpaceState();
-		state.setCurrent(2);
-		ViewSpace v1 = new ViewSpace();v1.setId(1);v1.setName("测试1");
-		ViewSpace v2 = new ViewSpace();v2.setId(2);v2.setName("测试2");
-		ViewSpace v3 = new ViewSpace();v3.setId(3);v3.setName("测试3");
-		state.setSpaces(Arrays.asList(v1,v2,v3));
+		state.setSpaces(spaces);
+		int spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
+		state.setCurrent(spaceId);
 		return state;
 	}
 
 	public List<Node> doGetNodes(@Param("id") Integer id,
 			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
-//		if (StringUtil.isBlank(treeId) || null == spaceId)
-//			return null;
-//		if (null == id)
-//			id = Source.InternId.ROOT;
-//		List<Node> nodes = getSubNodes(id, spaceId, treeId);
-//		return nodes;
-		List<Node> nodes = new ArrayList<Node>();
-		if (null == id){
-			Node node = new Node();
-			node.setId(0);
-			node.setName("所有");
-			node.setIsParent(true);
-			nodes.add(node);
-		}
-		else{
-			Node node = new Node();
-			node.setId(++i);
-			node.setName(i.toString());
-			node.setIsParent(i%2==0);
-			nodes.add(node);
-			node = new Node();
-			node.setId(++i);
-			node.setName(i.toString());
-			node.setIsParent(i%2==0);
-			nodes.add(node);
-			node = new Node();
-			node.setId(++i);
-			node.setName(i.toString());
-			node.setIsParent(i%2==0);
-			nodes.add(node);
-		}
+		if (StringUtil.isBlank(treeId) || null == spaceId)
+			return null;
+		if (null == id)
+			id = Source.InternId.ROOT;
+		List<Node> nodes = getSubNodes(id, spaceId, treeId, new HashSet<Integer>());
 		return nodes;
 	}
 
@@ -100,10 +64,17 @@ public class SourceTree {
 		sourceTreeManager.closeNode(id, spaceId, treeId);
 	}
 
-	private List<Node> getSubNodes(int id, int spaceId, String treeId) {
+	public void doSwitchSpace(@Param("spaceId") Integer spaceId,
+			@Param("treeId") String treeId) {
+		sourceTreeManager.setCurrentSpaceId(spaceId, treeId);
+	}
+
+	private List<Node> getSubNodes(int id, int spaceId, String treeId, Set<Integer> parent) {
+		Set<Integer> set = new HashSet<Integer>(parent);
+		set.add(id);
 		List<Node> nodes = new ArrayList<Node>();
 
-		List<Source> sources = sourceViewService.getSourcesAdjacentTo(id,
+		List<Source> sources = viewSpaceService.getSourcesAdjacentTo(id,
 				spaceId);
 		if (null == sources)
 			return null;
@@ -117,13 +88,14 @@ public class SourceTree {
 			String icon = getSourceTreeIcon(sourceId);
 			node.setIcon(icon);
 
-			boolean hasSubsources = sourceViewService.countSourcesAdjacentTo(
+			boolean hasSubsources = viewSpaceService.countSourcesAdjacentTo(
 					sourceId, spaceId) != 0;
 			node.setIsParent(hasSubsources);
 			if (hasSubsources
-					&& sourceTreeManager.isNodeOpen(sourceId, sourceId, treeId)) {
+					&& sourceTreeManager.isNodeOpen(sourceId, spaceId, treeId)
+					&& !set.contains(sourceId)) {
 				node.setOpen(true);
-				node.setChildren(getSubNodes(sourceId, sourceId, treeId));
+				node.setChildren(getSubNodes(sourceId, sourceId, treeId, set));
 			}
 			nodes.add(node);
 		}
@@ -134,7 +106,7 @@ public class SourceTree {
 	private String getSourceTreeIcon(int sourceId) {
 		String icon = iconDao.getSourceSideBarIcon(sourceId);
 		while (null == icon) {
-			List<Source> parents = sourceViewService.getAdjacentSources(
+			List<Source> parents = viewSpaceService.getAdjacentSources(
 					sourceId, ViewSpace.TYPE);
 			if (parents.isEmpty())
 				break;

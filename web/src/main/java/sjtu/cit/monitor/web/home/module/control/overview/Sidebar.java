@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import sjtu.cit.monitor.api.cep.SourceService;
-import sjtu.cit.monitor.api.cep.SourceViewService;
-import sjtu.cit.monitor.api.cep.entity.ViewSpace;
+import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
+import sjtu.cit.monitor.api.cep.entity.ViewSpace;
 import sjtu.cit.monitor.dal.dao.IconDao;
 
 import com.alibaba.citrus.turbine.Context;
@@ -22,7 +22,7 @@ public class Sidebar {
 	private SourceService sourceService;
 	
 	@Autowired
-	private SourceViewService sourceViewService;
+	private ViewSpaceService viewSpaceService;
 
 	public void execute(Context context, @Param("sourceId") Integer sourceId) {
 		if (null == sourceId) sourceId = 0;
@@ -41,7 +41,7 @@ public class Sidebar {
 	private String getIcon(int sourceId) {
 		String icon = iconDao.getSourceSideBarIcon(sourceId);
 		while(null == icon){
-			List<Source> parents =  sourceViewService.getAdjacentSources(sourceId, ViewSpace.TYPE);
+			List<Source> parents =  viewSpaceService.getAdjacentSources(sourceId, ViewSpace.TYPE);
 			if(parents.isEmpty()) break;
 			icon = iconDao.getSourceSideBarIcon(parents.get(0).getId());
 		}

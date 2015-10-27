@@ -8,6 +8,10 @@ define(function(require, exports, module) {
 	module.exports = tree;
 
 	function tree(node, setting) {
+		$(node).css({
+			"min-height" : "100%",
+			"min-width" : "100%"
+		});
 		return new Tree(node, setting);
 	}
 
@@ -15,7 +19,7 @@ define(function(require, exports, module) {
 		var self = this;
 		var treeId = $(node).attr('id');
 		var spaceId;
-		var rMenu = $("<ul class='dropdown-menu rMenu' style='position:fixed'></ul>");
+		var rMenu = $("<ul class='dropdown-menu rMenu' style='position:fixed;'></ul>");
 		var _setting = {
 			async : {
 				enable : true,
@@ -25,7 +29,7 @@ define(function(require, exports, module) {
 			},
 
 			view : {
-				dblClickExpand : false
+				
 			},
 
 			callback : {
@@ -37,9 +41,10 @@ define(function(require, exports, module) {
 		
 		$.extend(true, _setting, setting);
 		$(node).after(rMenu);
+		
 		init();
 
-		function init(msg) {
+		function init() {
 			$.ajax({
 				type : 'POST',
 				url : "/common/source_tree/getViewSpaces.json",
@@ -58,14 +63,17 @@ define(function(require, exports, module) {
 						a.append(small);
 						li.append(a);
 						li.attr("spaceId", this.id);
-						small.text(this.name + "域");
+						small.text(this.name + "视图");
 						if(this.id==spaceId) li.addClass("active");
 						rMenu.append(li);
 					});
+					
+					rMenu.children('li').on('click', switchSpace);
 
 					rMenu.css({
 						"min-width" : "50px",
 					});
+					
 					$.fn.zTree.init($(node), exSetting(), null);
 				}
 			});
@@ -117,13 +125,36 @@ define(function(require, exports, module) {
 				"left" : x + "px",
 				"visibility" : "visible"
 			});
-			$("body").bind("mousedown", onBodyMouseDown);
+			$("body").bind("mousedown", hideRMenu);
 		}
-
-		function onBodyMouseDown(event) {
-			rMenu.css({
-				"visibility" : "hidden"
-			});
+		
+		function hideRMenu(event) {
+			if (!($(event.target).hasClass("rMenu") || $(event.target).parents(".rMenu").length>0)) {
+				rMenu.hide();
+			}
+		}
+		
+		function switchSpace(){
+			$("body").unbind("mousedown", hideRMenu);
+			var spaceId = $(this).attr('spaceId');
+			if(undefined != spaceId) {
+				$.ajax({
+					type : 'POST',
+					url : "/common/source_tree/switchSpace.json",
+					data : {
+						treeId : treeId,
+						spaceId : spaceId
+					},
+					success: function(){
+						rMenu.hide();
+					},
+					error: function(){
+						$("body").bind("mousedown", hideRMenu);
+					}
+				});
+			}else{
+				$("body").bind("mousedown", hideRMenu);
+			}
 		}
 
 	}
