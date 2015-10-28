@@ -15,4 +15,8 @@
 	<!-- 暴露dubbo服务接口 -->
 	<import resource="classpath:service-dubbo.xml"/>
 	
+	<!-- Dal层配置 -->
+	<import resource="classpath:dal/data-source.xml" />
+	<import resource="classpath:dal/dao-intern.xml" />
+	
 </beans>

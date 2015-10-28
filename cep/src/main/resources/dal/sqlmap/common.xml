@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sjtu.cit.monitor.cep.dal.dao.impl.CommonDaoImpl">
+	<select id="select" parameterType="sjtu.cit.monitor.cep.dal.query.SelectQuery"
+		resultType="map">
+		select * from ${table}
+		<where>
+			<foreach collection="where" index="key" item="value" separator=" and ">
+				${key}=#{value}
+			</foreach>
+		</where>
+		<trim prefix="limit" prefixOverrides=", ">
+			<if test="offset != null and limit != null">
+				#{offset},
+			</if>
+			<if test="limit != null">
+				#{limit}
+			</if>
+		</trim>
+	</select>
+
+	<insert id="insert" parameterType="sjtu.cit.monitor.cep.dal.query.SelectQuery">
+		insert into ${table}
+		<foreach collection="values" index="key" item="value" separator="," open="(" close=")">
+			${key}
+		</foreach>
+		values
+		<foreach collection="values" index="key" item="value" separator="," open="(" close=")">
+			#{value}
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="sjtu.cit.monitor.cep.dal.query.UpdateQuery">
+		update ${table}
+		<set>
+			<foreach collection="set" index="key" item="value" separator=",">
+				${key}=#{value}
+			</foreach>
+		</set>
+		<where>
+			<foreach collection="where" index="key" item="value" separator=" and ">
+				${key}=#{value}
+			</foreach>
+		</where>
+	</update>
+
+	<delete id="delete" parameterType="sjtu.cit.monitor.cep.dal.query.DeleteQuery">
+		delete from ${table}
+		<where>
+			<foreach collection="where" index="key" item="value" separator=" and ">
+				${key}=#{value}
+			</foreach>
+		</where>
+	</delete>
+</mapper>

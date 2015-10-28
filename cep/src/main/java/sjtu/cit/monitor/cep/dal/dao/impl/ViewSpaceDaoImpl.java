@@ -6,42 +6,42 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sjtu.cit.monitor.api.cep.entity.Source;
+import sjtu.cit.monitor.api.cep.entity.ViewSpace;
 import sjtu.cit.monitor.cep.dal.dao.CommonDao;
-import sjtu.cit.monitor.cep.dal.dao.SourceDao;
+import sjtu.cit.monitor.cep.dal.dao.ViewSpaceDao;
 import sjtu.cit.monitor.cep.dal.query.DeleteQuery;
 import sjtu.cit.monitor.cep.dal.query.InsertQuery;
 import sjtu.cit.monitor.cep.dal.query.SelectQuery;
 import sjtu.cit.monitor.cep.dal.query.UpdateQuery;
 
-public class SourceDaoImpl implements SourceDao {
-
-	private static final String TABLE_NAME = "SOURCE";
+public class ViewSpaceDaoImpl implements ViewSpaceDao{
+	
+	private static final String TABLE_NAME = "VIEWSPACE";
 
 	@Autowired
 	private CommonDao commonDao;
 
 	@Override
-	public List<Source> getList(SelectQuery query) {
-		List<Source> lst = new ArrayList<Source>();
+	public List<ViewSpace> getList(SelectQuery query) {
+		List<ViewSpace> lst = new ArrayList<ViewSpace>();
 		query.table(TABLE_NAME);
 		for (Map<String, Object> item : commonDao.getList(query)) {
-			Source source = new Source();
-			source.setId((Integer) item.get("ID"));
-			source.setName((String) item.get("NAME"));
-			lst.add(source);
+			ViewSpace space = new ViewSpace();
+			space.setId((Integer) item.get("ID"));
+			space.setName((String) item.get("NAME"));
+			lst.add(space);
 		}
 		return lst;
 	}
 
 	@Override
-	public Source get(SelectQuery query) {
+	public ViewSpace get(SelectQuery query) {
 		query.table(TABLE_NAME);
 		Map<String, Object> item = commonDao.get(query);
-		Source source = new Source();
-		source.setId((Integer) item.get("ID"));
-		source.setName((String) item.get("NAME"));
-		return source;
+		ViewSpace space = new ViewSpace();
+		space.setId((Integer) item.get("ID"));
+		space.setName((String) item.get("NAME"));
+		return space;
 	}
 
 	@Override
@@ -61,5 +61,5 @@ public class SourceDaoImpl implements SourceDao {
 		query.table(TABLE_NAME);
 		return commonDao.delete(query);
 	}
-
+	
 }

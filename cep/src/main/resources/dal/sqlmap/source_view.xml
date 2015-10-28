@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sjtu.cit.monitor.cep.dal.dao.impl.SourceViewDaoImpl">
+	<select id="select" parameterType="map" resultType="map">
+		select * from SOURCE_VIEW
+		<where>
+			<if test="fromId != null">
+					FROMID=#{fromId}
+			</if>
+			<if test="toId != null">
+					FROMID=#{toId}
+			</if>
+			<if test="spaceId != null">
+					SPACEID=#{spaceId}
+			</if>
+			<if test="edge != null">
+					EDGE=#{edge}
+			</if>
+		</where>
+		<trim prefix="limit" prefixOverrides=", ">
+			<if test="offset != null and limit != null">
+				    #{offset}, 
+			</if>
+			<if test="limit != null">
+					#{limit}
+			</if>
+		</trim>
+	</select>
+</mapper>

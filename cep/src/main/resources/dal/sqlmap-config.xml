@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<mappers>
-		<mapper resource="dal/sqlmap/sourcexml" />
+		<mapper resource="dal/sqlmap/common.xml" />
+		<mapper resource="dal/sqlmap/source_view.xml" />
 	</mappers>
 </configuration>

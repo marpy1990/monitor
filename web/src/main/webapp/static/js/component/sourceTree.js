@@ -17,6 +17,7 @@ define(function(require, exports, module) {
 
 	function Tree(node, setting) {
 		var self = this;
+		if(undefined == $(node).attr('id')) $(node).attr('id', 'default');
 		var treeId = $(node).attr('id');
 		var spaceId;
 		var rMenu = $("<ul class='dropdown-menu rMenu' style='position:fixed;'></ul>");
@@ -51,32 +52,34 @@ define(function(require, exports, module) {
 				data : {
 					treeId : treeId
 				},
-				success : function(msg) {
-					rMenu.empty();
-					spaceId = msg.current;
-					rMenu.append("<li class='text-center'><small>切换资源视图</small></li>");
-					rMenu.append("<li role='separator' class='divider'></li>");
-					$.each(msg.spaces, function() {
-						var li=$("<li/>")
-						var a=$("<a class='text-center' href='javascript:void(0)'/>");
-						var small=$("<small/>");
-						a.append(small);
-						li.append(a);
-						li.attr("spaceId", this.id);
-						small.text(this.name + "视图");
-						if(this.id==spaceId) li.addClass("active");
-						rMenu.append(li);
-					});
-					
-					rMenu.children('li').on('click', switchSpace);
-
-					rMenu.css({
-						"min-width" : "50px",
-					});
-					
-					$.fn.zTree.init($(node), exSetting(), null);
-				}
+				success : refresh
 			});
+		}
+		
+		function refreah(msg){
+			rMenu.empty();
+			spaceId = msg.current;
+			rMenu.append("<li class='text-center'><small>切换资源视图</small></li>");
+			rMenu.append("<li role='separator' class='divider'></li>");
+			$.each(msg.spaces, function() {
+				var li=$("<li/>")
+				var a=$("<a class='text-center' href='javascript:void(0)'/>");
+				var small=$("<small/>");
+				a.append(small);
+				li.append(a);
+				li.attr("spaceId", this.id);
+				small.text(this.name + "视图");
+				if(this.id==spaceId) li.addClass("active");
+				rMenu.append(li);
+			});
+			
+			rMenu.children('li').on('click', switchSpace);
+
+			rMenu.css({
+				"min-width" : "50px",
+			});
+			
+			$.fn.zTree.init($(node), exSetting(), null);
 		}
 		
 		function exSetting(){
