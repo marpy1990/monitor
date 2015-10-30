@@ -56,7 +56,7 @@ define(function(require, exports, module) {
 			});
 		}
 		
-		function refreah(msg){
+		function refresh(msg){
 			rMenu.empty();
 			spaceId = msg.current;
 			rMenu.append("<li class='text-center'><small>切换资源视图</small></li>");
@@ -150,6 +150,7 @@ define(function(require, exports, module) {
 					},
 					success: function(){
 						rMenu.hide();
+						init();
 					},
 					error: function(){
 						$("body").bind("mousedown", hideRMenu);

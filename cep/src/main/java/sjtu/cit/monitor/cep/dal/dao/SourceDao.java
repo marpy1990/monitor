@@ -4,4 +4,6 @@ import sjtu.cit.monitor.api.cep.entity.Source;
 
 public interface SourceDao extends BasicDao<Source>{
 	
+	public Integer getMaxId();
+	
 }

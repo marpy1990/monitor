@@ -32,7 +32,6 @@ public class SourceTree {
 
 	@Autowired
 	private SourceTreeManager sourceTreeManager;
-	
 
 	public ViewSpaceState doGetViewSpaces(@Param("treeId") String treeId) {
 		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
@@ -48,9 +47,8 @@ public class SourceTree {
 			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
 		if (StringUtil.isBlank(treeId) || null == spaceId)
 			return null;
-		if (null == id)
-			id = Source.InternId.ROOT;
-		List<Node> nodes = getSubNodes(id, spaceId, treeId, new HashSet<Integer>());
+		List<Node> nodes = getSubNodes(id, spaceId, treeId,
+				new HashSet<Integer>());
 		return nodes;
 	}
 
@@ -69,13 +67,19 @@ public class SourceTree {
 		sourceTreeManager.setCurrentSpaceId(spaceId, treeId);
 	}
 
-	private List<Node> getSubNodes(int id, int spaceId, String treeId, Set<Integer> parent) {
+	private List<Node> getSubNodes(Integer id, int spaceId, String treeId,
+			Set<Integer> parent) {
 		Set<Integer> set = new HashSet<Integer>(parent);
 		set.add(id);
 		List<Node> nodes = new ArrayList<Node>();
 
-		List<Source> sources = viewSpaceService.getSourcesAdjacentTo(id,
-				spaceId);
+		List<Source> sources = new ArrayList<Source>();
+		if (null == id) { // 对根结点特殊处理
+			Source root = sourceService.getSource(Source.InternId.ROOT);
+			sources.add(root);
+		} else {
+			sources = viewSpaceService.getSourcesAdjacentTo(id, spaceId);
+		}
 		if (null == sources)
 			return null;
 		Collections.sort(sources, SourceComparator.INSTANCE);
@@ -90,7 +94,7 @@ public class SourceTree {
 
 			boolean hasSubsources = viewSpaceService.countSourcesAdjacentTo(
 					sourceId, spaceId) != 0;
-			node.setIsParent(hasSubsources);
+			node.setIsParent(hasSubsources || sourceId == Source.InternId.ROOT);
 			if (hasSubsources
 					&& sourceTreeManager.isNodeOpen(sourceId, spaceId, treeId)
 					&& !set.contains(sourceId)) {
@@ -123,7 +127,7 @@ class SourceComparator implements Comparator<Source> {
 
 	@Override
 	public int compare(Source s1, Source s2) {
-		return Integer.valueOf(s1.getId()).compareTo(s2.getId());
+		return Integer.compare(s1.getId(), s2.getId());
 	}
 
 }
@@ -134,7 +138,7 @@ class SpaceComparator implements Comparator<ViewSpace> {
 
 	@Override
 	public int compare(ViewSpace s1, ViewSpace s2) {
-		return Integer.valueOf(s1.getId()).compareTo(s2.getId());
+		return Integer.compare(s1.getId(), s2.getId());
 	}
 
 }

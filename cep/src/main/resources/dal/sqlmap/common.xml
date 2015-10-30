@@ -3,10 +3,19 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sjtu.cit.monitor.cep.dal.dao.impl.CommonDaoImpl">
+<mapper namespace="sjtu.cit.monitor.cep.dal.dao.CommonDao">
 	<select id="select" parameterType="sjtu.cit.monitor.cep.dal.query.SelectQuery"
 		resultType="map">
-		select * from ${table}
+		select
+		<choose>
+			<when test="columns.size()>0">
+				<foreach collection="columns" item="column" separator=",">
+					${column}
+				</foreach>
+			</when>
+			<otherwise>*</otherwise>
+		</choose>
+		from ${table}
 		<where>
 			<foreach collection="where" index="key" item="value" separator=" and ">
 				${key}=#{value}

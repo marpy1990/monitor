@@ -62,4 +62,16 @@ public class SourceDaoImpl implements SourceDao {
 		return commonDao.delete(query);
 	}
 
+	@Override
+	public Integer getMaxId() {
+		SelectQuery query = new SelectQuery().columns("max(ID)").limit(1).table(TABLE_NAME);
+		return (Integer) commonDao.get(query).get("max(ID)");
+	}
+
+	@Override
+	public int count(SelectQuery query) {
+		query.table(TABLE_NAME);
+		return commonDao.count(query);
+	}
+
 }

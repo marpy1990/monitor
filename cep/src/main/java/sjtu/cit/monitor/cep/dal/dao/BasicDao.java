@@ -11,6 +11,8 @@ public interface BasicDao<DO> {
 	
 	public List<DO> getList(SelectQuery query);
 	
+	public int count(SelectQuery query);
+	
 	public DO get(SelectQuery query);
 	
 	public boolean insert(InsertQuery query);

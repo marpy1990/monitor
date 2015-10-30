@@ -22,7 +22,7 @@ public interface SourceService {
 	public Source addSource(String sourceName);
 
 	/**
-	 * 删除一个source，同时会将其对应的视图关系全部删掉
+	 * 移除source，只会将其对应的视图关系全部置否，但不会删除其本身，否则会影响已经记录的事件
 	 * 
 	 * @param sourceId
 	 */

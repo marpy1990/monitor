@@ -45,7 +45,9 @@
 	<beans:import resource="classpath:biz/biz-intern.xml" />
 	<beans:import resource="classpath:dal/data-source.xml" />
 	<beans:import resource="classpath:dal/dao-intern.xml" />
-	<beans:import resource="classpath:local.xml" />
+	
+	<!-- dubbo消费者 -->
+	<beans:import resource="classpath:biz/biz-dubbo.xml" />
 
 	<!-- 综合设置。 -->
 	<services:webx-configuration>

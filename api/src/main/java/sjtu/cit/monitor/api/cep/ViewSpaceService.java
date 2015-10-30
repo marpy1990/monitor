@@ -78,29 +78,29 @@ public interface ViewSpaceService {
 	/**
 	 * 测试是否存在一条fromSource到toSource的连通分支
 	 * 
-	 * @param formSourceId 起点
+	 * @param fromSourceId 起点
 	 * @param toSourceId 终点
 	 * @param spaceId 域
 	 * @return 当且仅当formSource与toSource都存在且存在这样一条连通分支时返回true
 	 */
-	public boolean existsPath(int formSourceId, int toSourceId, int spaceId);
+	public boolean existsPath(int fromSourceId, int toSourceId, int spaceId);
 
 	/**
 	 * 在view space视图下下添加fromSource到toSource的边
 	 * 
-	 * @param formSourceId 起点
+	 * @param fromSourceId 起点
 	 * @param toSourceId 终点
 	 * @param spaceId 域
 	 */
-	public void addEdge(int formSourceId, int toSourceId, int spaceId);
+	public void addEdge(int fromSourceId, int toSourceId, int spaceId);
 	
 	/**
 	 * 在view space视图下删除fromSource到toSource的边
 	 * 
-	 * @param formSourceId
+	 * @param fromSourceId
 	 * @param toSourceId
 	 * @param spaceId
 	 */
-	public void removeEdge(int formSourceId, int toSourceId, int spaceId);
+	public void removeEdge(int fromSourceId, int toSourceId, int spaceId);
 
 }

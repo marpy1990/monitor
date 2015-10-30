@@ -3,29 +3,34 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sjtu.cit.monitor.cep.dal.dao.impl.SourceViewDaoImpl">
-	<select id="select" parameterType="map" resultType="map">
-		select * from SOURCE_VIEW
+<mapper namespace="sjtu.cit.monitor.cep.dal.dao.SourceViewDao">
+	<select id="getSourceList" parameterType="sjtu.cit.monitor.cep.dal.query.SelectQuery"
+		resultType="sjtu.cit.monitor.api.cep.entity.Source">
+		select 
+			SOURCE.ID as ID,
+			SOURCE.NAME as NAME
+		from 
+			SOURCE, SOURCE_VIEW
 		<where>
-			<if test="fromId != null">
-					FROMID=#{fromId}
-			</if>
-			<if test="toId != null">
-					FROMID=#{toId}
-			</if>
-			<if test="spaceId != null">
-					SPACEID=#{spaceId}
-			</if>
-			<if test="edge != null">
-					EDGE=#{edge}
-			</if>
+			<choose>
+				<when test="where.FROMID != null">
+					SOURCE_VIEW.FROMID=#{where.fROMID}
+					and SOURCE.ID=SOURCE_VIEW.TOID
+				</when>
+				<when test="where.TOID != null">
+					SOURCE_VIEW.TOID=#{where.TOID}
+					and SOURCE.ID=SOURCE_VIEW.FROMID
+				</when>
+			</choose>
+			and SOURCE_VIEW.SPACEID=#{where.SPACEID}
+			and SOURCE_VIEW.EDGE="true"
 		</where>
 		<trim prefix="limit" prefixOverrides=", ">
 			<if test="offset != null and limit != null">
-				    #{offset}, 
+				#{offset},
 			</if>
 			<if test="limit != null">
-					#{limit}
+				#{limit}
 			</if>
 		</trim>
 	</select>
