@@ -10,9 +10,9 @@
 
 	<!-- 使用multicast广播注册中心暴露服务地址 -->
 	<dubbo:registry protocol="multicast" address="224.5.6.7:1234" />
-
-	<!-- 用dubbo协议在20880端口暴露服务 -->
-	<dubbo:protocol name="dubbo" port="20880" />
+	
+	<!-- 用dubbo协议暴露服务,默认端口是20880若被占用则会自动增长 -->
+	<dubbo:protocol name="dubbo" port="-1"/>
 
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:service interface="sjtu.cit.monitor.api.cep.SourceService" ref="sourceServiceImpl" />

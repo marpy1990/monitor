@@ -1,4 +1,4 @@
-package sjtu.cit.monitor.web.home.module.screen.common;
+package sjtu.cit.monitor.web.home.module.screen.rpc;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,8 +44,11 @@ public class SourceTree {
 	}
 
 	public List<Node> doGetNodes(@Param("id") Integer id,
-			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
-		if (StringUtil.isBlank(treeId) || null == spaceId)
+			@Param("treeId") String treeId) {
+		if (StringUtil.isBlank(treeId))
+			return null;
+		Integer spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
+		if (spaceId == null)
 			return null;
 		List<Node> nodes = getSubNodes(id, spaceId, treeId,
 				new HashSet<Integer>());
@@ -53,13 +56,13 @@ public class SourceTree {
 	}
 
 	public void doExpandNode(@Param("id") Integer id,
-			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
-		sourceTreeManager.openNode(id, spaceId, treeId);
+			@Param("treeId") String treeId) {
+		sourceTreeManager.openNode(id, treeId);
 	}
 
 	public void doCollapseNode(@Param("id") Integer id,
-			@Param("spaceId") Integer spaceId, @Param("treeId") String treeId) {
-		sourceTreeManager.closeNode(id, spaceId, treeId);
+			@Param("treeId") String treeId) {
+		sourceTreeManager.closeNode(id, treeId);
 	}
 
 	public void doSwitchSpace(@Param("spaceId") Integer spaceId,
@@ -95,11 +98,10 @@ public class SourceTree {
 			boolean hasSubsources = viewSpaceService.countSourcesAdjacentTo(
 					sourceId, spaceId) != 0;
 			node.setIsParent(hasSubsources || sourceId == Source.InternId.ROOT);
-			if (hasSubsources
-					&& sourceTreeManager.isNodeOpen(sourceId, spaceId, treeId)
+			if (hasSubsources && sourceTreeManager.isNodeOpen(sourceId, treeId)
 					&& !set.contains(sourceId)) {
 				node.setOpen(true);
-				node.setChildren(getSubNodes(sourceId, sourceId, treeId, set));
+				node.setChildren(getSubNodes(sourceId, spaceId, treeId, set));
 			}
 			nodes.add(node);
 		}

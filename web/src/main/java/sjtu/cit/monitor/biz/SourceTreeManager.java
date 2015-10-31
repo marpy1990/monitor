@@ -7,13 +7,13 @@ public interface SourceTreeManager {
 	 * 
 	 * @return
 	 */
-	public boolean isNodeOpen(int sourceId, int spaceId, String treeId);
+	public boolean isNodeOpen(int sourceId, String treeId);
 
-	public void openNode(int sourceId, int spaceId, String treeId);
+	public void openNode(int sourceId, String treeId);
 
-	public void closeNode(int sourceId, int spaceId, String treeId);
+	public void closeNode(int sourceId, String treeId);
 	
-	public int getCurrentSpaceId(String treeId);
+	public Integer getCurrentSpaceId(String treeId);
 	
 	public void setCurrentSpaceId(int spaceId, String treeId);
 

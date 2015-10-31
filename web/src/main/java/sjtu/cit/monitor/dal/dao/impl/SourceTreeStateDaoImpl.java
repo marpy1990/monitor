@@ -26,9 +26,9 @@ public class SourceTreeStateDaoImpl extends SqlSessionDaoSupport implements
 	}
 
 	@Override
-	public int getCurrentSpaceId(TreeNode tree) {
+	public Integer getCurrentSpaceId(TreeNode tree) {
 		Integer spaceId = this.getSqlSession().selectOne(NAMESPACE + ".getCurrentSpaceId", tree);
-		return null == spaceId ? 0 : spaceId;
+		return spaceId;
 	}
 
 	@Override

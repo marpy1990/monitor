@@ -65,25 +65,25 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 	@Override
 	public List<Source> getAdjacentSources(int sourceId, int spaceId) {
 		return sourceViewDao.getSourceList(new SelectQuery().where("FROMID",
-				sourceId).where("SPACEID", spaceId));
+				sourceId).where("SPACEID", spaceId).where("EDGE", true));
 	}
 
 	@Override
 	public int countAdjacentSources(int sourceId, int spaceId) {
 		return sourceViewDao.count(new SelectQuery().where("FROMID", sourceId)
-				.where("SPACEID", spaceId));
+				.where("SPACEID", spaceId).where("EDGE", true));
 	}
 
 	@Override
 	public List<Source> getSourcesAdjacentTo(int sourceId, int spaceId) {
 		return sourceViewDao.getSourceList(new SelectQuery().where("TOID",
-				sourceId).where("SPACEID", spaceId));
+				sourceId).where("SPACEID", spaceId).where("EDGE", true));
 	}
 
 	@Override
 	public int countSourcesAdjacentTo(int sourceId, int spaceId) {
 		return sourceViewDao.count(new SelectQuery().where("TOID", sourceId)
-				.where("SPACEID", spaceId));
+				.where("SPACEID", spaceId).where("EDGE", true));
 	}
 
 	@Override
@@ -108,9 +108,9 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 
 	@Override
 	public void addEdge(int fromSourceId, int toSourceId, int spaceId) {
-		int count = sourceViewDao.update(new UpdateQuery()
-				.set("FROMID", fromSourceId).set("TOID", toSourceId)
-				.set("SPACEID", spaceId).set("EDGE", true));
+		int count = sourceViewDao.update(new UpdateQuery().set("EDGE", true)
+				.where("FROMID", fromSourceId).where("TOID", toSourceId)
+				.where("SPACEID", spaceId));
 		if (count == 0)
 			sourceViewDao.insert(new InsertQuery()
 					.value("FROMID", fromSourceId).value("TOID", toSourceId)

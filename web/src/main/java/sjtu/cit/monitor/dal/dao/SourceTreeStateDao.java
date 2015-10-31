@@ -22,8 +22,9 @@ public interface SourceTreeStateDao {
 	 * 获取当前spaceId
 	 * 
 	 * @param spaceId
+	 * @return 若未设置返回null
 	 */
-	public int getCurrentSpaceId(TreeNode tree);
+	public Integer getCurrentSpaceId(TreeNode tree);
 	
 	/**
 	 * 设置当前spaceId

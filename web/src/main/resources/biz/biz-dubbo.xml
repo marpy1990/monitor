@@ -16,5 +16,5 @@
 	<!-- 生成远程服务代理，可以和本地bean一样使用Service -->
 	<dubbo:reference id="sourceService" interface="sjtu.cit.monitor.api.cep.SourceService" />
 	<dubbo:reference id="viewSpaceService" interface="sjtu.cit.monitor.api.cep.ViewSpaceService" />
-
+	
 </beans>

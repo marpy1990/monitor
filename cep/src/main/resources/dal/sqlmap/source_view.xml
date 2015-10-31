@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</when>
 			</choose>
 			and SOURCE_VIEW.SPACEID=#{where.SPACEID}
-			and SOURCE_VIEW.EDGE="true"
+			and SOURCE_VIEW.EDGE=1
 		</where>
 		<trim prefix="limit" prefixOverrides=", ">
 			<if test="offset != null and limit != null">

@@ -42,7 +42,7 @@ public interface ViewSpaceService {
 	public void updateNameSpace(ViewSpace space);
 	
 	/**
-	 * 获取view space视图下source的所有相邻结点<br/>
+	 * 获取view space视图下source的所有直接指向结点<br/>
 	 * 
 	 * @param sourceId
 	 * @param spaceId
@@ -59,7 +59,7 @@ public interface ViewSpaceService {
 	public int countAdjacentSources(int sourceId, int spaceId);
 
 	/**
-	 * 获取view space视图下所有相邻于source的结点
+	 * 获取view space视图下所有指向source的结点
 	 * 
 	 * @param sourceId
 	 * @param spaceId
