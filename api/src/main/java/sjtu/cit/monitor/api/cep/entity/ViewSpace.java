@@ -19,6 +19,11 @@ public class ViewSpace implements Serializable{
 	 */
 	public static final int TYPE = 1;
 	
+	/**
+	 * 系统保留的view space，用于标识被删除的资源
+	 */
+	public static final int RECYCLED = 2;
+	
 	private int id;
 	
 	private String name;

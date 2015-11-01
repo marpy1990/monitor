@@ -15,8 +15,8 @@
 	  	</div>
   	  </div>
   	  <div class="panel-footer">
-		<button type="button" id="create-event-type" class="btn btn-default btn-sm">新建资源视图...</button>
-	</div>
+		<button type="button" id="create-view-space" class="btn btn-default btn-sm">新建资源视图...</button>
+	  </div>
     </div>
 </div>
 <script type="text/javascript">seajs.use("js/setting/viewspace.js")</script>

@@ -1,6 +1,27 @@
 define(function(require, exports, module) {
 	require('jquery');
 
+	var Modal = require('js/component/modal.js');
+	var modal = Modal('#create-view-space');
+	modal.title.text("新建资源视图");
+	modal.body.html("<div class='form-group'>"
+			+ "<label for='add-space'>视图名称</label>"
+			+ "<input class='form-control' id='add-space'/></div>");
+	modal.ok.click(function(){
+		var name = $("#add-space").val();
+		if(name == "") return;
+		$.ajax({
+			type : 'POST',
+			url : "/rpc/setting/viewspace/addViewSpace.json",
+			data : {
+				name : name 
+			},
+			success : function() {
+				location.reload();
+			}
+		});
+	});
+
 	var Tree = require('js/component/sourceTree.js');
 
 	var setting = {
@@ -10,7 +31,7 @@ define(function(require, exports, module) {
 		},
 		edit : {
 			enable : true,
-			editNameSelectAll: true
+			editNameSelectAll : true
 		},
 		callback : {
 			// beforeDrag : beforeDrag,
@@ -38,7 +59,7 @@ define(function(require, exports, module) {
 			btn.bind("click", function() {
 				$.ajax({
 					type : 'POST',
-					url : "/rpc/setting/view_space/addSource.json",
+					url : "/rpc/setting/viewspace/addSource.json",
 					data : {
 						parentId : treeNode.id,
 						treeId : treeId
@@ -59,7 +80,7 @@ define(function(require, exports, module) {
 			return;
 		$.ajax({
 			type : 'POST',
-			url : "/rpc/setting/view_space/renameSource.json",
+			url : "/rpc/setting/viewspace/renameSource.json",
 			data : {
 				sourceId : treeNode.id,
 				name : treeNode.name,
@@ -71,15 +92,14 @@ define(function(require, exports, module) {
 	}
 
 	function beforeRemove(treeId, treeNode) {
-		if (!confirm("你确定移除 " + treeNode.name + " 吗？（我才懒得写回滚呢）"))
-			return false;
 		var ret = $.ajax({
 			type : 'POST',
-			url : "/rpc/setting/view_space/removeSource.json",
+			url : "/rpc/setting/viewspace/removeSource.json",
 			async : false,
 			data : {
 				sourceId : treeNode.id,
-				name : treeNode.name,
+				parentId : treeNode.getParentNode().id,
+				treeId : treeId,
 			}
 		});
 

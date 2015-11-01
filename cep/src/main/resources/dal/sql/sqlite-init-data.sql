@@ -1,4 +1,5 @@
 insert into VIEWSPACE(ID, NAME) VALUES(1, "Type");
+insert into VIEWSPACE(ID, NAME) VALUES(2, "Recycled");
 INSERT INTO SOURCE(ID, NAME) VALUES(0,'root');
 INSERT INTO SOURCE(ID, NAME) VALUES(1,'system');
 INSERT INTO SOURCE(ID, NAME) VALUES(2,'hardware');

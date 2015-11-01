@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
@@ -35,6 +36,8 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 	@Override
 	@Transactional
 	public ViewSpace addViewSpace(String viewSpaceName) {
+		if (StringUtils.isEmpty(viewSpaceName))
+			return null;
 		boolean success = viewSpaceDao.insert(new InsertQuery().value("NAME",
 				viewSpaceName));
 		if (!success)
@@ -64,8 +67,9 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 
 	@Override
 	public List<Source> getAdjacentSources(int sourceId, int spaceId) {
-		return sourceViewDao.getSourceList(new SelectQuery().where("FROMID",
-				sourceId).where("SPACEID", spaceId).where("EDGE", true));
+		return sourceViewDao.getSourceList(new SelectQuery()
+				.where("FROMID", sourceId).where("SPACEID", spaceId)
+				.where("EDGE", true));
 	}
 
 	@Override
@@ -76,8 +80,9 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 
 	@Override
 	public List<Source> getSourcesAdjacentTo(int sourceId, int spaceId) {
-		return sourceViewDao.getSourceList(new SelectQuery().where("TOID",
-				sourceId).where("SPACEID", spaceId).where("EDGE", true));
+		return sourceViewDao.getSourceList(new SelectQuery()
+				.where("TOID", sourceId).where("SPACEID", spaceId)
+				.where("EDGE", true));
 	}
 
 	@Override
@@ -120,9 +125,9 @@ public class ViewSpaceServiceImpl implements ViewSpaceService {
 
 	@Override
 	public void removeEdge(int fromSourceId, int toSourceId, int spaceId) {
-		sourceViewDao.update(new UpdateQuery().set("FROMID", fromSourceId)
-				.set("TOID", toSourceId).set("SPACEID", spaceId)
-				.set("EDGE", false));
+		sourceViewDao.update(new UpdateQuery().set("EDGE", false)
+				.where("FROMID", fromSourceId).where("TOID", toSourceId)
+				.where("SPACEID", spaceId));
 	}
 
 }
