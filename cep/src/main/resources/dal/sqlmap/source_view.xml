@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<where>
 			<choose>
 				<when test="where.FROMID != null">
-					SOURCE_VIEW.FROMID=#{where.fROMID}
+					SOURCE_VIEW.FROMID=#{where.FROMID}
 					and SOURCE.ID=SOURCE_VIEW.TOID
 				</when>
 				<when test="where.TOID != null">

@@ -10,3 +10,9 @@ INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (5, 0, '/static/img/sourc
 INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (5, 1, '/static/img/sourceTree/component_128x128.ico');
 INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (6, 0, '/static/img/sourceTree/fx_16x16.png');
 INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (6, 1, '/static/img/sourceTree/fx_256x256.ico');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (7, 0, '/static/img/sourceTree/process_16x16.png');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (7, 1, '/static/img/sourceTree/process_128x128.ico');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (8, 0, '/static/img/sourceTree/log_16x16.png');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (8, 1, '/static/img/sourceTree/log_128x128.ico');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (9, 0, '/static/img/sourceTree/var_16x16.png');
+INSERT INTO SOURCE_ICON(SOURCEID, FEATURE, URL) VALUES (9, 1, '/static/img/sourceTree/var_26x26.ico');
