@@ -30,7 +30,8 @@ public class SourceTreeManagerImpl implements SourceTreeManager {
 	@Override
 	public boolean isNodeOpen(int sourceId, String treeId) {
 		Integer spaceId = this.getCurrentSpaceId(treeId);
-		if(null == spaceId) return false;
+		if (null == spaceId)
+			return false;
 		SourceNode node = getCurrentNode(sourceId, spaceId, treeId);
 		return sourceTreeStateDao.isOpen(node);
 	}
@@ -38,7 +39,8 @@ public class SourceTreeManagerImpl implements SourceTreeManager {
 	@Override
 	public void openNode(int sourceId, String treeId) {
 		Integer spaceId = this.getCurrentSpaceId(treeId);
-		if(null == spaceId) return;
+		if (null == spaceId)
+			return;
 		SourceNode node = getCurrentNode(sourceId, spaceId, treeId);
 		node.setOpen(true);
 		sourceTreeStateDao.updateNodeState(node);
@@ -47,19 +49,21 @@ public class SourceTreeManagerImpl implements SourceTreeManager {
 	@Override
 	public void closeNode(int sourceId, String treeId) {
 		Integer spaceId = this.getCurrentSpaceId(treeId);
-		if(null == spaceId) return;
+		if (null == spaceId)
+			return;
 		SourceNode node = getCurrentNode(sourceId, spaceId, treeId);
 		node.setOpen(false);
 		sourceTreeStateDao.updateNodeState(node);
 	}
 
 	@Override
-	public Integer getCurrentSpaceId(String treeId) {
+	public int getCurrentSpaceId(String treeId) {
 		User user = userManager.getCurrentUser();
 		TreeNode tree = new TreeNode();
 		tree.setUserId(user.getId());
 		tree.setTreeId(treeId);
-		return sourceTreeStateDao.getCurrentSpaceId(tree);
+		Integer spaceId = sourceTreeStateDao.getCurrentSpaceId(tree);
+		return spaceId == null ? 0 : spaceId;
 	}
 
 	@Override

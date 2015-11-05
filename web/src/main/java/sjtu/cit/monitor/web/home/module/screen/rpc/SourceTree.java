@@ -111,14 +111,19 @@ public class SourceTree {
 
 	private String getSourceTreeIcon(int sourceId) {
 		String icon = iconDao.getSourceTreeIcon(sourceId);
+		Set<Integer> checked = new HashSet<Integer>();
 		while (null == icon) {
+			if (checked.contains(sourceId))
+				break; // 防止死锁
+			checked.add(sourceId);
 			List<Source> parents = viewSpaceService.getAdjacentSources(
 					sourceId, ViewSpace.TYPE);
 			if (parents.isEmpty())
 				break;
 			icon = iconDao.getSourceTreeIcon(parents.get(0).getId());
+			sourceId = parents.get(0).getId();
 		}
-		return icon;
+		return "null".equals(icon) ? null : icon;
 	}
 
 }

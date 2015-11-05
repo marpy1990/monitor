@@ -12,9 +12,9 @@ public interface SourceTreeManager {
 	public void openNode(int sourceId, String treeId);
 
 	public void closeNode(int sourceId, String treeId);
-	
-	public Integer getCurrentSpaceId(String treeId);
-	
+
+	public int getCurrentSpaceId(String treeId);
+
 	public void setCurrentSpaceId(int spaceId, String treeId);
 
 }
