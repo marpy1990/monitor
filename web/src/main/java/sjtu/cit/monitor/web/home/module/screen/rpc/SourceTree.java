@@ -110,7 +110,7 @@ public class SourceTree {
 	}
 
 	private String getSourceTreeIcon(int sourceId) {
-		String icon = iconDao.getSourceSideBarIcon(sourceId);
+		String icon = iconDao.getSourceTreeIcon(sourceId);
 		while (null == icon) {
 			List<Source> parents = viewSpaceService.getAdjacentSources(
 					sourceId, ViewSpace.TYPE);

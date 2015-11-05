@@ -7,14 +7,15 @@ define(function(require, exports, module) {
 	modal.body.html("<div class='form-group'>"
 			+ "<label for='add-space'>视图名称</label>"
 			+ "<input class='form-control' id='add-space'/></div>");
-	modal.ok.click(function(){
+	modal.ok.click(function() {
 		var name = $("#add-space").val();
-		if(name == "") return;
+		if (name == "")
+			return;
 		$.ajax({
 			type : 'POST',
 			url : "/rpc/setting/viewspace/addViewSpace.json",
 			data : {
-				name : name 
+				name : name
 			},
 			success : function() {
 				location.reload();
@@ -31,16 +32,19 @@ define(function(require, exports, module) {
 		},
 		edit : {
 			enable : true,
-			editNameSelectAll : true
+			editNameSelectAll : true,
+			showRemoveBtn : showRemoveBtn
 		},
 		callback : {
-			// beforeDrag : beforeDrag,
-			// beforeDrop : beforeDrop,
+			beforeDrag : beforeDrag,
+			beforeDragOpen : beforeDragOpen,
+			beforeDrop : beforeDrop,
+			onDrop : onDrop,
 			beforeRemove : beforeRemove,
-			onRename : onRename
+			beforeRename : beforeRename
 		}
 	};
-	var trees = [];
+	var trees = {};
 	trees["view-tree-left"] = Tree('#view-tree-left', setting);
 	trees["view-tree-right"] = Tree('#view-tree-right', setting);
 
@@ -75,24 +79,36 @@ define(function(require, exports, module) {
 		$("#addBtn_" + treeNode.tId).unbind().remove();
 	}
 
-	function onRename(event, treeId, treeNode, isCancel) {
+	function beforeRename(treeId, treeNode, newName, isCancel) {
 		if (isCancel)
 			return;
+		var ok = false;
 		$.ajax({
 			type : 'POST',
 			url : "/rpc/setting/viewspace/renameSource.json",
+			async : false,
 			data : {
 				sourceId : treeNode.id,
-				name : treeNode.name,
+				name : newName,
 			},
-			success : function() {
-				$.fn.zTree.getZTreeObj(treeId).cancelSelectedNode();
+			success : function(msg) {
+				ok = (msg == true);
 			}
 		});
+		$.fn.zTree.getZTreeObj(treeId).cancelSelectedNode();
+		return ok;
+	}
+
+	function showRemoveBtn(treeId, treeNode) {
+		if (treeNode.id == 0)
+			return false;
+		else
+			return true;
 	}
 
 	function beforeRemove(treeId, treeNode) {
-		var ret = $.ajax({
+		var ok = false;
+		$.ajax({
 			type : 'POST',
 			url : "/rpc/setting/viewspace/removeSource.json",
 			async : false,
@@ -100,10 +116,76 @@ define(function(require, exports, module) {
 				sourceId : treeNode.id,
 				parentId : treeNode.getParentNode().id,
 				treeId : treeId,
+			},
+			success : function(msg) {
+				ok = (msg == true);
 			}
 		});
 
-		return ret.responseJSON == true;
+		return ok;
+	}
+
+	function beforeDrag(treeId, treeNodes) {
+		if (treeNodes[0].id == 0)
+			return false;
+
+		treeNodes[0].fromTreeId = treeId;
+		treeNodes[0].fromParentId = treeNodes[0].getParentNode().id;
+		return true;
+	}
+
+	function beforeDragOpen(treeId, treeNode) {
+		$.ajax({
+			type : 'POST',
+			url : "/rpc/source_tree/expandNode.json",
+			data : {
+				id : treeNode.id,
+				treeId : treeId
+			}
+		});
+		return true;
+	}
+
+	function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+		if (targetNode == null || (targetNode.id == 0 && moveType != "inner"))
+			return false;
+		else {
+			return true;
+		}
+	}
+
+	function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+		var parentId = 0;
+		if (moveType == "inner")
+			parentId = targetNode.id;
+		else {
+			if (targetNode == null || targetNode.getParentNode() == null)
+				return;
+			parentId = targetNode.getParentNode().id;
+		}
+		var sourceIds = [];
+		$.each(treeNodes, function(i, e) {
+			sourceIds[i] = e.id;
+		});
+
+		$.ajax({
+			type : 'POST',
+			url : "/rpc/setting/viewspace/moveSources.json",
+			data : {
+				parentId : parentId,
+				fromParentId : treeNodes[0].fromParentId,
+				sourceIds : JSON.stringify(sourceIds),
+				isCopy : isCopy,
+				fromTreeId : treeNodes[0].fromTreeId,
+				treeId : treeId
+			},
+
+			success : function() {
+				$.each(trees, function() {
+					this.refresh();
+				});
+			}
+		});
 	}
 
 });

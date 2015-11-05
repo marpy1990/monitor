@@ -46,7 +46,7 @@ define(function(require, exports, module) {
 		$(node).after(rMenu);
 
 		this.refresh = init;
-
+		
 		init();
 
 		function init() {
