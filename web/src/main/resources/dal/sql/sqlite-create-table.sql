@@ -26,3 +26,11 @@ create table SOURCE_ICON(
 	URL          TEXT                  NOT NULL,
 	constraint pk_SOURCE_TYPE_ICON PRIMARY KEY (SOURCEID, FEATURE)
 );
+
+create table SOURCE_ALIAS(
+	SOURCEID     INTEGER  			   NOT NULL,
+	SPACEID      INTEGER               NOT NULL,
+	ALIAS        TEXT                  		   ,
+	ENABLE       BOOLEAN               NOT NULL,
+	constraint pk_SOURCE_ALIAS PRIMARY KEY (SOURCEID, SPACEID)
+);

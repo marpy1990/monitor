@@ -2,12 +2,12 @@ define(function(require, exports, module) {
 	require('jquery');
 
 	var Modal = require('js/component/modal.js');
-	var modal = Modal('#create-view-space');
-	modal.title.text("新建资源视图");
-	modal.body.html("<div class='form-group'>"
+	var create_modal = Modal();
+	create_modal.title.text("新建资源视图");
+	create_modal.body.html("<div class='form-group'>"
 			+ "<label for='add-space'>视图名称</label>"
 			+ "<input class='form-control' id='add-space'/></div>");
-	modal.ok.click(function() {
+	create_modal.ok.click(function() {
 		var name = $("#add-space").val();
 		if (name == "")
 			return;
@@ -21,6 +21,10 @@ define(function(require, exports, module) {
 				location.reload();
 			}
 		});
+	});
+
+	$('#create-view-space').click(function() {
+		create_modal.show();
 	});
 
 	var Tree = require('js/component/sourceTree.js');
@@ -41,7 +45,9 @@ define(function(require, exports, module) {
 			beforeDrop : beforeDrop,
 			onDrop : onDrop,
 			beforeRemove : beforeRemove,
-			beforeRename : beforeRename
+			beforeRename : beforeRename,
+			onRename : onRename,
+			onDblClick : onDblClick
 		}
 	};
 	var trees = {};
@@ -85,11 +91,12 @@ define(function(require, exports, module) {
 		var ok = false;
 		$.ajax({
 			type : 'POST',
-			url : "/rpc/setting/viewspace/renameSource.json",
+			url : "/rpc/setting/viewspace/renameSourceAlias.json",
 			async : false,
 			data : {
 				sourceId : treeNode.id,
-				name : newName,
+				alias : newName,
+				treeId : treeId,
 			},
 			success : function(msg) {
 				ok = (msg == true);
@@ -97,6 +104,10 @@ define(function(require, exports, module) {
 		});
 		$.fn.zTree.getZTreeObj(treeId).cancelSelectedNode();
 		return ok;
+	}
+
+	function onRename(event, treeId, treeNode, isCancel) {
+		trees[treeId].refresh();
 	}
 
 	function showRemoveBtn(treeId, treeNode) {
@@ -184,6 +195,47 @@ define(function(require, exports, module) {
 				$.each(trees, function() {
 					this.refresh();
 				});
+			}
+		});
+	}
+
+	function onDblClick(event, treeId, treeNode) {
+		$.fn.zTree.getZTreeObj(treeId).cancelSelectedNode();
+		var rename_modal = Modal();
+		rename_modal.title.text("资源信息");
+		var name;
+		$.ajax({
+			type : 'POST',
+			url : "/rpc/setting/viewspace/getSourceDetail.json",
+			data : {
+				sourceId : treeNode.id
+			},
+			success : function(msg) {
+				rename_modal.body.html("<div class='form-group'>"
+						+ "<label for='source-id'>资源ID</label>"
+						+ "<div class='form-control' id='source-id'>"
+						+ treeNode.id + "</div>" + "</div>"
+						+ "<div class='form-group'>"
+						+ "<label for='source-name'>资源名称</label>"
+						+ "<input class='form-control' id='source-name' value='"
+						+ msg.name + "'></input>" + "</div>");
+				rename_modal.ok.click(function() {
+					var name = $("#source-name").val();
+					if (name == "")
+						return;
+					$.ajax({
+						type : 'POST',
+						url : "/rpc/setting/viewspace/renameSource.json",
+						data : {
+							sourceId : treeNode.id,
+							name : name
+						},
+						success : function() {
+							location.reload();
+						}
+					});
+				});
+				rename_modal.show();
 			}
 		});
 	}

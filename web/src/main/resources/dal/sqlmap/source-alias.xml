@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sjtu.cit.monitor.dal.dao.SourceAliasDao">
+	<select id="select" parameterType="map" resultType="sjtu.cit.monitor.dal.entity.SourceAlias"><![CDATA[
+		select
+			*
+		from 
+			SOURCE_ALIAS
+		where
+			SOURCEID=#{sourceId}
+		and SPACEID=#{spaceId}
+	]]></select>
+	
+	<insert id="insert" parameterType="sjtu.cit.monitor.dal.entity.SourceAlias"><![CDATA[
+		insert into SOURCE_ALIAS (
+			SOURCEID,
+			SPACEID,
+			ALIAS,
+			ENABLE
+		) values(
+			#{sourceId},
+			#{spaceId},
+			#{alias},
+			#{enable}
+		)
+	]]></insert>
+	
+	<update id="update" parameterType="sjtu.cit.monitor.dal.entity.SourceAlias"><![CDATA[
+        update
+        	SOURCE_ALIAS
+        set
+        	ALIAS=#{alias},
+        	ENABLE=#{enable}
+        where
+        	SOURCEID=#{sourceId}
+        and SPACEID=#{spaceId}
+    ]]></update>
+    
+</mapper>

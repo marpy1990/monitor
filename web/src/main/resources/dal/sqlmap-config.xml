@@ -7,5 +7,6 @@
 		<mapper resource="dal/sqlmap/user.xml" />
 		<mapper resource="dal/sqlmap/icon.xml" />
 		<mapper resource="dal/sqlmap/source-tree-state.xml" />
+		<mapper resource="dal/sqlmap/source-alias.xml" />
 	</mappers>
 </configuration>

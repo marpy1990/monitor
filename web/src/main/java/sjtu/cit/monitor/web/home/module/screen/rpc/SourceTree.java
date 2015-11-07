@@ -13,8 +13,10 @@ import sjtu.cit.monitor.api.cep.SourceService;
 import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
 import sjtu.cit.monitor.api.cep.entity.ViewSpace;
+import sjtu.cit.monitor.biz.SourceAliasManager;
 import sjtu.cit.monitor.biz.SourceTreeManager;
 import sjtu.cit.monitor.dal.dao.IconDao;
+import sjtu.cit.monitor.dal.entity.SourceAlias;
 
 import com.alibaba.citrus.turbine.dataresolver.Param;
 import com.alibaba.citrus.util.StringUtil;
@@ -32,6 +34,9 @@ public class SourceTree {
 
 	@Autowired
 	private SourceTreeManager sourceTreeManager;
+	
+	@Autowired
+	private SourceAliasManager sourceAliasManager;
 
 	public ViewSpaceState doGetViewSpaces(@Param("treeId") String treeId) {
 		List<ViewSpace> spaces = viewSpaceService.getViewSpaces();
@@ -90,7 +95,8 @@ public class SourceTree {
 			Node node = new Node();
 			int sourceId = source.getId();
 			node.setId(sourceId);
-			node.setName(source.getName());
+			String name = getSourceName(source, spaceId);
+			node.setName(name);
 
 			String icon = getSourceTreeIcon(sourceId);
 			node.setIcon(icon);
@@ -107,6 +113,14 @@ public class SourceTree {
 		}
 
 		return nodes;
+	}
+
+	private String getSourceName(Source source, int spaceId) {
+		SourceAlias sourceAlias = sourceAliasManager.getAlias(source.getId(), spaceId);
+		if(sourceAlias.isEnable())
+			return sourceAlias.getAlias();
+		else
+			return source.getName();
 	}
 
 	private String getSourceTreeIcon(int sourceId) {

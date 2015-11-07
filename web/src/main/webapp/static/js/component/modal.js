@@ -6,11 +6,11 @@ define(function(require, exports, module) {
 
 	module.exports = modal;
 	
-	function modal(node) {
-		return new Modal(node);
+	function modal() {
+		return new Modal();
 	}
 
-	function Modal(node) {
+	function Modal() {
 		var div_fade = $("<div class='modal fade' />");
 		var div_dialog = $("<div class='modal-dialog' />");
 		var div_content = $("<div class='modal-content'>");
@@ -34,12 +34,6 @@ define(function(require, exports, module) {
 		
 		div_dialog.append(div_content);
 		div_fade.append(div_dialog);
-
-		$(node).after(div_fade);
-		
-		$(node).click(function(){
-			div_fade.modal();
-		});
 		
 		this.title = div_title;
 		this.body = div_body;
@@ -48,6 +42,9 @@ define(function(require, exports, module) {
 		this.cancel = div_cancel;
 		this.close = div_close;
 		
+		this.show = function(){
+			div_fade.modal();
+		}
 	}
 
 });

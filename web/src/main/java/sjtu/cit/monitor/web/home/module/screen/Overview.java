@@ -54,7 +54,7 @@ public class Overview {
 			modules.add(Overview.LINE_CHART);
 			return modules;
 		}
-		if (viewSpaceService.existsPath(sourceId, Source.InternId.SOFTWARE,
+		if (viewSpaceService.existsPath(sourceId, Source.InternId.SYSTEM,
 				ViewSpace.TYPE)) {
 			modules.add(Overview.TOPOLOGY);
 			modules.add(Overview.DETAIL);

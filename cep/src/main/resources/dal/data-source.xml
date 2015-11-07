@@ -27,6 +27,7 @@
 		ignore-failures="ALL">
 		<jdbc:script location="classpath:dal/sql/sqlite-create-table.sql" />
 		<jdbc:script location="classpath:dal/sql/sqlite-init-data.sql" />
+		<jdbc:script location="classpath:dal/sql/sqlite-init-telecom-data.sql" />
 	</jdbc:initialize-database>
 	
 	<!-- ======================================================================== -->

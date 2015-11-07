@@ -9,9 +9,11 @@ import sjtu.cit.monitor.api.cep.SourceService;
 import sjtu.cit.monitor.api.cep.ViewSpaceService;
 import sjtu.cit.monitor.api.cep.entity.Source;
 import sjtu.cit.monitor.api.cep.entity.ViewSpace;
+import sjtu.cit.monitor.biz.SourceAliasManager;
 import sjtu.cit.monitor.biz.SourceTreeManager;
 
 import com.alibaba.citrus.turbine.dataresolver.Param;
+import com.alibaba.citrus.util.StringUtil;
 import com.alibaba.fastjson.JSON;
 
 public class Viewspace {
@@ -25,6 +27,9 @@ public class Viewspace {
 	@Autowired
 	private ViewSpaceService viewSpaceService;
 
+	@Autowired
+	private SourceAliasManager sourceAliasManager;
+
 	public void doAddSource(@Param("parentId") Integer parentId,
 			@Param("treeId") String treeId) {
 		Integer spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
@@ -33,12 +38,13 @@ public class Viewspace {
 		sourceTreeManager.openNode(parentId, treeId);
 	}
 
-	public Boolean doRenameSource(@Param("sourceId") Integer sourceId,
-			@Param("name") String name) {
-		Source source = new Source();
-		source.setId(sourceId);
-		source.setName(name);
-		sourceService.updateSource(source);
+	public Boolean doRenameSourceAlias(@Param("sourceId") Integer sourceId,
+			@Param("alias") String alias, @Param("treeId") String treeId) {
+		int spaceId = sourceTreeManager.getCurrentSpaceId(treeId);
+		if (StringUtil.isBlank(alias))
+			sourceAliasManager.cancelAlias(sourceId, spaceId);
+		else
+			sourceAliasManager.setAlias(sourceId, spaceId, alias);
 		return true;
 	}
 
@@ -74,6 +80,19 @@ public class Viewspace {
 			}
 			viewSpaceService.addEdge(id, parentId, spaceId);
 		}
+	}
+
+	public Source doGetSourceDetail(@Param("sourceId") Integer sourceId) {
+		Source source = sourceService.getSource(sourceId);
+		return source;
+	}
+
+	public void doRenameSource(@Param("sourceId") Integer sourceId,
+			@Param("name") String name) {
+		Source source = new Source();
+		source.setId(sourceId);
+		source.setName(name);
+		sourceService.updateSource(source);
 	}
 
 }
