@@ -2,6 +2,7 @@
  * 弹窗控件
  */
 define(function(require, exports, module) {
+	require('jquery');
 	require('bootstrap');
 
 	module.exports = modal;

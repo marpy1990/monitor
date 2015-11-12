@@ -4,11 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sjtu.cit</groupId>
 	<artifactId>monitor</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>${monitor.version}</version>
 	<packaging>pom</packaging>
 	<name>monitor</name>
 	<description>monitor system</description>
 	<properties>
+		<monitor.version>1.0-SNAPSHOT</monitor.version>
 		<java.version>1.7</java.version>
 		<java.encoding>UTF-8</java.encoding>
 		<webx-version>3.2.4</webx-version>

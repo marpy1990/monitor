@@ -42,22 +42,16 @@ public class Overview {
 
 	private Set<String> getShowModules(int sourceId) {
 		Set<String> modules = new HashSet<String>();
-		if (viewSpaceService.existsPath(sourceId, Source.InternId.MACHINE,
-				ViewSpace.TYPE)) {
-			modules.add(Overview.DETAIL);
-			modules.add(Overview.PROBE);
-			return modules;
-		}
 		if (viewSpaceService.existsPath(sourceId, Source.InternId.COMPONENT,
 				ViewSpace.TYPE)) {
 			modules.add(Overview.DETAIL);
 			modules.add(Overview.LINE_CHART);
 			return modules;
 		}
-		if (viewSpaceService.existsPath(sourceId, Source.InternId.SYSTEM,
+		if (viewSpaceService.existsPath(sourceId, Source.InternId.MACHINE,
 				ViewSpace.TYPE)) {
-			modules.add(Overview.TOPOLOGY);
 			modules.add(Overview.DETAIL);
+			modules.add(Overview.PROBE);
 			return modules;
 		}
 		if (viewSpaceService.existsPath(sourceId, Source.InternId.FUNCTION,
@@ -66,7 +60,12 @@ public class Overview {
 			modules.add(Overview.LOG);
 			return modules;
 		}
-
+		if (viewSpaceService.existsPath(sourceId, Source.InternId.SYSTEM,
+				ViewSpace.TYPE)) {
+			modules.add(Overview.TOPOLOGY);
+			modules.add(Overview.DETAIL);
+			return modules;
+		}
 		modules.add(Overview.DETAIL);
 		return modules;
 	}

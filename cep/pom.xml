@@ -11,14 +11,11 @@
 	<artifactId>monitor.cep</artifactId>
 	<name>cep</name>
 	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>sjtu.cit</groupId>
 			<artifactId>monitor.api</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${monitor.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
