@@ -31,7 +31,7 @@ define(function(require, exports, module) {
 			},
 
 			view : {
-				dblClickExpand: false
+				dblClickExpand : false
 			},
 
 			callback : {
@@ -46,7 +46,7 @@ define(function(require, exports, module) {
 		$(node).after(rMenu);
 
 		this.refresh = init;
-		
+
 		init();
 
 		function init() {
@@ -65,21 +65,19 @@ define(function(require, exports, module) {
 			spaceId = msg.current;
 			rMenu.append("<li class='text-center'><small>切换资源视图</small></li>");
 			rMenu.append("<li role='separator' class='divider'></li>");
-			$
-					.each(
-							msg.spaces,
-							function() {
-								var li = $("<li/>")
-								var a = $("<a class='text-center' href='javascript:void(0)'/>");
-								var small = $("<small/>");
-								a.append(small);
-								li.append(a);
-								li.attr("spaceId", this.id);
-								small.text(this.name + "视图");
-								if (this.id == spaceId)
-									li.addClass("active");
-								rMenu.append(li);
-							});
+			$.each(msg.spaces, function() {
+				var li = $("<li/>")
+				var a = $("<a class='text-center' "
+						+ "href='javascript:void(0)'/>");
+				var small = $("<small/>");
+				a.append(small);
+				li.append(a);
+				li.attr("spaceId", this.id);
+				small.text(this.name + "视图");
+				if (this.id == spaceId)
+					li.addClass("active");
+				rMenu.append(li);
+			});
 
 			rMenu.children('li').on('click', switchSpace);
 

@@ -34,3 +34,8 @@
     background: #0c4174;
     z-index: 998;
 }
+
+h4 {
+	border-left: 6px solid #ffb640;
+	padding-left: 12px;
+}

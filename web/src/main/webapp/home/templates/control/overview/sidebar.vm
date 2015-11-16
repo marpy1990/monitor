@@ -13,8 +13,8 @@
 	#if($modules.contains("detail"))
 	  <li module="detail"><a href="#detail">基本信息</a></li>
 	#end
-	#if($modules.contains("lineChart"))
-	  <li module="lineChart"><a href="#lineChart">折线图</a></li>
+	#if($modules.contains("chart"))
+	  <li module="chart"><a href="#chart">状态图</a></li>
 	#end
 	#if($modules.contains("log"))
 	  <li module="log"><a href="#log">日志信息</a></li>

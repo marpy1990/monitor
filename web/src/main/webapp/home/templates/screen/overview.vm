@@ -9,7 +9,9 @@ $control.setTemplate("overview/sidebar.vm").setParameter("modules", $modules)
 	$control.setTemplate("overview/detail.vm")
 	#end
 	
-	##$control.setTemplate("test.vm")
+	#if($modules.contains("chart"))
+	$control.setTemplate("overview/chart.vm")
+	#end
 	
 </div>
 <script type="text/javascript">seajs.use("js/overview/content.js")</script>

@@ -18,7 +18,7 @@ public class Overview {
 
 	private static final String TOPOLOGY = "topology";
 	private static final String DETAIL = "detail";
-	private static final String LINE_CHART = "lineChart";
+	private static final String CHART = "chart";
 	private static final String LOG = "log";
 	private static final String PROBE = "probe";
 
@@ -45,7 +45,7 @@ public class Overview {
 		if (viewSpaceService.existsPath(sourceId, Source.InternId.COMPONENT,
 				ViewSpace.TYPE)) {
 			modules.add(Overview.DETAIL);
-			modules.add(Overview.LINE_CHART);
+			modules.add(Overview.CHART);
 			return modules;
 		}
 		if (viewSpaceService.existsPath(sourceId, Source.InternId.MACHINE,
