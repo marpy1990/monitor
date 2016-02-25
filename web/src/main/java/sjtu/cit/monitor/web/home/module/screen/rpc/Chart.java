@@ -7,14 +7,17 @@ import com.alibaba.citrus.turbine.dataresolver.Param;
 import com.alibaba.fastjson.JSON;
 
 public class Chart {
-	
+
 	List<Line> doGetPoints(@Param("seriesIds") String seriesIdsJson,
 			@Param("from") Long from, @Param("to") Long to) {
 		List<Integer> seriesIds = JSON.parseArray(seriesIdsJson, Integer.class);
 		return null;
 	}
-	
-	
+
+}
+
+class Series {
+
 }
 
 interface Line extends List<Point> {
@@ -22,23 +25,32 @@ interface Line extends List<Point> {
 
 class Point {
 
-	private Long x;
+	private long x;
 
-	private Number y;
+	private double y;
 
-	public Long getX() {
+	public Point() {
+		super();
+	}
+
+	public Point(long x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public long getX() {
 		return x;
 	}
 
-	public void setX(Long x) {
+	public void setX(long x) {
 		this.x = x;
 	}
 
-	public Number getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setY(Number y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
